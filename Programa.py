@@ -4,7 +4,7 @@ from random import randint
 class Window(pyglet.window.Window):
 
     def __init__ (self):
-        super(Window, self).__init__(1200,600,caption="RPG",resizable=True,anchor_x="center",anchor_y="center")
+        super(Window, self).__init__(1200,600,caption="RPG",resizable=True)
         self.char = Humano("Citizen.png", 400, 300)
         self.snout = Troll("Troll.png", 100, 100)
 
