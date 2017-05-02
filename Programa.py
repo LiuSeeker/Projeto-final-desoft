@@ -55,13 +55,21 @@ class Troll():
     def __init__(self,nome, x, y):
         self.x = x
         self.y = y
-        self.addx = 0
-        self.addy = 0
         self.image = pyglet.resource.image(nome)
 
     def draw(self):
-        self.x += self.addx
-        self.y += self.addy
+        dx = randint (-1,1)
+        dy = randint (-1,1)
+        self.x += dx
+        self.y += dy
+        if self.x < 0:
+            self.x = 0
+        elif self.x >= 1200:
+            self.x = 1200
+        if self.y < 0:
+            self.y = 0
+        elif self.y >= 600:
+            self.y = 600
         self.image.blit(self.x,self.y)
         
 def main():
