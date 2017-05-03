@@ -18,18 +18,45 @@ DARKGREY = (100,100,100)
 
 #cria a classe jogador
 class Jogador(pygame.sprite.Sprite):
-	def __init__ (self,x,y):
-		pygame.sprite.Sprite.__init__(self)
-		self.image = pygame.Surface((50,50)) #tamanho da imagem
-		self.image.fill(RED)
-		self.rect = self.image.get_rect() 
-		self.rect.center = (x,y) #define o centro da imgagem como referência para desenhar
+    def __init__(self, x, y):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.Surface((50,50)) #tamanho da imagem
+        self.image.fill(GREEN)
+        self.rect = self.image.get_rect() 
+        self.rect.center = (x,y) #define o centro da imgagem como referência para desenhar
+        self.speedx = 0
+        self.speedy = 0
+
+    def update(self):
+
+        #Movimento do player
+        self.speedx = 0
+        self.speedy = 0
+        Teclas_pressionadas = pygame.key.get_pressed() #analisa todas as teclas pressionadas
+        if Teclas_pressionadas[pygame.K_LEFT]: 
+            self.speedx = -5
+        if Teclas_pressionadas[pygame.K_RIGHT]:
+            self.speedx = 5
+        if Teclas_pressionadas[pygame.K_UP]:
+            self.speedy = -5
+        if Teclas_pressionadas[pygame.K_DOWN]:
+            self.speedy = 5
+        self.rect.x += self.speedx
+        self.rect.y += self.speedy
+        if self.rect.right > WIDTH:
+            self.rect.right = WIDTH
+        if self.rect.left < 0:
+            self.rect.left = 0
+        if self.rect.top < 0:
+            self.rect.top = 0 
+        if self.rect.bottom > HEIGHT:
+            self.rect.bottom = HEIGHT
 
 class Monstro(pygame.sprite.Sprite):
-    def __init__(self,x,y): 
+    def __init__(self, x, y):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.Surface((40,40))
-        self.image.fill(BLUE)
+        self.image.fill(RED)
         self.rect = self.image.get_rect()
         self.rect.center = (x,y)
 
@@ -58,6 +85,8 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+    #Update
+    sprites.update()
 
     #espaço para "desenho"
     screen.fill(DARKGREY)
