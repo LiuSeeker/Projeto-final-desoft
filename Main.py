@@ -26,7 +26,7 @@ class Jogador(pygame.sprite.Sprite):
 		self.rect.center = (x,y) #define o centro da imgagem como referência para desenhar
 
 class Monstro(pygame.sprite.Sprite):
-    def __init__(self,x,y):
+    def __init__(self,x,y): 
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.Surface((40,40))
         self.image.fill(BLUE)
@@ -43,7 +43,7 @@ clock = pygame.time.Clock()
 
 #grupo de sprites
 sprites = pygame.sprite.Group() #define o nome do grupo
-jogador1 = Jogador(WIDTH/2, HEIGHT/2)
+jogador1 = Jogador(WIDTH/2, HEIGHT/2) #argumentos definem a posição do objeto
 monstro1 = Monstro(50,50)
 sprites.add(jogador1) #adiciona o jogador1 no grupo
 sprites.add(monstro1) #adiciona o monstro1 no grupo
