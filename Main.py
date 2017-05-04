@@ -30,6 +30,7 @@ class Jogador(pygame.sprite.Sprite):
         self.rect.center = (x,y) #define o centro da imgagem como referência para desenhar
         self.speedx = 0
         self.speedy = 0
+        sprites.add(self)
 
     def update(self):
         #Movimento do player
@@ -65,6 +66,7 @@ class Monstro(pygame.sprite.Sprite):
         self.y = y
         self.rect.x = x*TILESIZE
         self.rect.y = y*TILESIZE
+        sprites.add(self)
 
 class Parede(pygame.sprite.Sprite):
     def __init__(self, x, y, cor):
@@ -76,8 +78,8 @@ class Parede(pygame.sprite.Sprite):
         self.y = y
         self.rect.x = x*TILESIZE
         self.rect.y = y*TILESIZE
-
-
+        sprites.add(self)
+        paredes.add(self)
 
 #inicia pygame e cria janela
 pygame.init()
@@ -93,9 +95,8 @@ paredes = pygame.sprite.Group()
 jogador1 = Jogador(WIDTH/2, HEIGHT/2) #argumentos definem a posição do objeto
 monstro1 = Monstro(2,2)
 monstro2 = Monstro(10,10)
-sprites.add(jogador1)
-sprites.add(monstro1)
-sprites.add(monstro2)
+parede1 = Parede(25,15,BLACK)
+
 
 
 #loop principal
