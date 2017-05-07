@@ -1,6 +1,7 @@
 import pygame
 import random
 
+
 #propriedades da janela
 WIDTH = 32*35
 HEIGHT = 32*21
