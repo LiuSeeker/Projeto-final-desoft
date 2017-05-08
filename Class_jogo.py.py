@@ -1,5 +1,6 @@
 import pygame
 import sys
+from os import path
 from setting import *
 from Sprites import *
 
@@ -10,14 +11,23 @@ class Game:
         pygame.display.set_caption(TITLE)
         self.clock = pygame.time.Clock()
         pygame.key.set_repeat(50, 0)
+        self.map_data = []
+        game_folder = path.dirname(__file__)
+        with open(path.join(game_folder, "mapa.txt"), "rt") as mapa:
+            for line in mapa:
+                self.map_data.append(line)
 
     def new(self):
         self.all_sprites = pygame.sprite.Group()
         self.paredes = pygame.sprite.Group()
         self.player = Player(self, (WIDTH-TILESIZE)/2, (HEIGHT-TILESIZE)/2)
         self.monstro = Monstro(self, 10, 10)
-        for x in range(15,20):
-            Parede(self, x, 9)
+
+        #cria as apredes a partir do "map_data"
+        for row, tiles in enumerate(self.map_data): #"row" retorna a posição na lista, "tiles" retorna a string
+            for col, tile in enumerate(tiles): #"col" retorna a posição na string, "tile" retorna o caractere
+                if tile == "1":
+                    Parede(self, col, row)
 
     def run(self):
         # Loop do jogo 
