@@ -10,7 +10,6 @@ class Game:
         pygame.display.set_caption(TITLE)
         self.clock = pygame.time.Clock()
         pygame.key.set_repeat(50, 0)
-        self.load_data()
 
     def new(self):
          
@@ -64,10 +63,9 @@ class Game:
                 if event.key == pygame.K_DOWN:
                     self.player.move(dy=1)
 
+
 # Cria o objeto do jogo
 game = Game()
-game.show_start_screen()
 while True:
     game.new()
     game.run()
-    game.show_go_screen()
