@@ -16,8 +16,9 @@ class Monstro(pygame.sprite.Sprite):
         self.rect.y = y * TILESIZE
 
     def move(self, dx = 0, dy = 0):
-        self.x += dx
-        self.y += dy
+        if not self.colisao_parede(dx,dy):
+            self.x += dx
+            self.y += dy
 
     def update(self):
         self.rect.x = self.x * TILESIZE
@@ -30,6 +31,15 @@ class Monstro(pygame.sprite.Sprite):
             self.rect.top = 0 
         if self.rect.bottom > HEIGHT:
             self.rect.bottom = HEIGHT
+
+    def colisao_parede(self,dx=0,dy=0):
+        for parede in self.game.paredes:
+            if parede.x == self.x + dx and parede.y == self.y + dy:
+                return True
+    
+        return False
+
+    
 
 
 class Player(pygame.sprite.Sprite):
@@ -45,8 +55,17 @@ class Player(pygame.sprite.Sprite):
         self.y = y/TILESIZE
 
     def move(self, dx=0, dy=0):
-        self.x += dx
-        self.y += dy
+        if not self.colisao_parede(dx,dy):
+            self.x += dx
+            self.y += dy
+
+    def colisao_parede(self,dx=0,dy=0):
+        for parede in self.game.paredes:
+            if parede.x == self.x + dx and parede.y == self.y + dy:
+                return True
+    
+        return False
+
 
     def update(self):
         self.rect.x = self.x * TILESIZE
@@ -70,5 +89,5 @@ class Parede(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.x = x
         self.y = y
-        self.rect.x = x*TILESIZE
-        self.rect.y = y*TILESIZE
+        self.rect.x = x * TILESIZE
+        self.rect.y = y * TILESIZE
