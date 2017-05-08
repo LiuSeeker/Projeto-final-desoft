@@ -15,6 +15,22 @@ class Monstro(pygame.sprite.Sprite):
         self.rect.x = x * TILESIZE
         self.rect.y = y * TILESIZE
 
+    def move(self, dx = 0, dy = 0):
+        self.x += dx
+        self.y += dy
+
+    def update(self):
+        self.rect.x = self.x * TILESIZE
+        self.rect.y = self.y * TILESIZE
+        if self.rect.right > WIDTH:
+            self.rect.right = WIDTH
+        if self.rect.left < 0:
+            self.rect.left = 0
+        if self.rect.top < 0:
+            self.rect.top = 0 
+        if self.rect.bottom > HEIGHT:
+            self.rect.bottom = HEIGHT
+
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, game, x, y):

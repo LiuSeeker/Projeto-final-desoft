@@ -1,5 +1,6 @@
 import pygame
 import sys
+import random
 from os import path
 from setting import *
 from Sprites import *
@@ -74,6 +75,9 @@ class Game:
                     self.player.move(dy=-1)
                 if event.key == pygame.K_DOWN:
                     self.player.move(dy=1)
+        self.monstro.move(dx = random.randint(-1,1))
+        self.monstro.move(dy = random.randint(-1,1))
+
 
 
 # Cria o objeto do jogo
