@@ -12,10 +12,12 @@ class Game:
         pygame.key.set_repeat(50, 0)
 
     def new(self):
-         
         self.all_sprites = pygame.sprite.Group()
-        self.player = Player(self, 0, 0)
+        self.paredes = pygame.sprite.Group()
+        self.player = Player(self, (WIDTH-TILESIZE)/2, (HEIGHT-TILESIZE)/2)
         self.monstro = Monstro(self, 10, 10)
+        for x in range(15,20):
+            Parede(self, x, 9)
 
     def run(self):
         # Loop do jogo 
