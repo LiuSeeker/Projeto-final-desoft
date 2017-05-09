@@ -52,24 +52,51 @@ class Player(pygame.sprite.Sprite):
         self.x = x
         self.y = y
 
-    def move(self, dx=0, dy=0):
-        if not self.colisao(dx,dy):
-            self.x += dx
-            self.y += dy
+    def get_keys(self):
+        self.vx = 0
+        self.vy = 0
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_a]:
+            self.vx = -VEL_JOGADOR
+        if keys[pygame.K_d]:
+            self.vx = VEL_JOGADOR
+        if keys[pygame.K_w]:
+            self.vy = -VEL_JOGADOR
+        if keys[pygame.K_s]:
+            self.vy = VEL_JOGADOR
+        if self.vx != 0 and self.vy != 0:
+            self.vx *= 0.7071
+            self.vy *= 0.7071
 
-    def colisao(self,dx=0,dy=0):
-        for parede in self.game.paredes:
-            if parede.x == self.x + dx and parede.y == self.y + dy:
-                return True
-        for sprite in self.game.all_sprites:
-            if sprite.x == self.x + dx and sprite.y == self.y + dy:
-                return True    
-        return False
+    def colisao_parede(self, dir):
+        if dir == 'x':
+            colisao = pygame.sprite.spritecollide(self,self.game.paredes,False)
+            if colisao:
+                if self.vx > 0:
+                    self.x = colisao[0].rect.left - self.rect.width
+                if self.vx < 0:
+                    self.x = colisao[0].rect.right
+                self.vx = 0
+                self.rect.x = self.x
+        if dir == 'y':
+            colisao = pygame.sprite.spritecollide(self,self.game.paredes,False)
+            if colisao:
+                if self.vy > 0:
+                    self.y = colisao[0].rect.top - self.rect.height
+                if self.vy < 0:
+                    self.y = colisao[0].rect.bottom 
+                self.vy = 0
+                self.rect.y = self.y
 
 
     def update(self):
-        self.rect.x = self.x * TILESIZE
-        self.rect.y = self.y * TILESIZE
+        self.get_keys()
+        self.x += self.vx * self.game.dt
+        self.y += self.vy * self.game.dt
+        self.rect.x = self.x
+        self.colisao_parede('x')
+        self.rect.y = self.y
+        self.colisao_parede('y')
         if self.rect.right > WIDTH:
             self.rect.right = WIDTH
         if self.rect.left < 0:
