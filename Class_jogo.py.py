@@ -4,6 +4,7 @@ import random
 from os import path
 from setting import *
 from Sprites import *
+from Mapa import *
 
 class Game:
     def __init__(self):
@@ -12,29 +13,30 @@ class Game:
         pygame.display.set_caption(TITLE)
         self.clock = pygame.time.Clock()
         pygame.key.set_repeat(50, 0)
-        self.map_data = []
         game_folder = path.dirname(__file__)
-        with open(path.join(game_folder, "mapa.txt"), "rt") as mapa:
-            for line in mapa:
-                self.map_data.append(line)
+        self.map = Map(path.join(game_folder, "mapa.txt"))
 
     def new(self):
         self.all_sprites = pygame.sprite.Group()
         self.paredes = pygame.sprite.Group()
-        self.player = Player(self, (WIDTH-TILESIZE)/2, (HEIGHT-TILESIZE)/2)
-        self.monstro = Monstro(self, 10, 10)
+        self.monstro = Monstro(self, 9, 9, RED)
+        self.monstro2 = Monstro(self,2,16, RED)
+        self.monstrot1 = Monstro(self,29, 17, BLUE)
+        self.monstrot2 = Monstro(self,31, 17, GREEN)
 
         #cria as apredes a partir do "map_data"
-        for row, tiles in enumerate(self.map_data): #"row" retorna a posição na lista, "tiles" retorna a string
+        for row, tiles in enumerate(self.map.data): #"row" retorna a posição na lista, "tiles" retorna a string
             for col, tile in enumerate(tiles): #"col" retorna a posição na string, "tile" retorna o caractere
                 if tile == "1":
                     Parede(self, col, row)
+                if tile == "P":
+                    self.player = Player(self, col, row)   
 
     def run(self):
         # Loop do jogo 
         self.playing = True
         while self.playing:
-            self.dt = self.clock.tick(FPS) / 1000
+            self.clock.tick(FPS)
             self.events()
             self.update()
             self.draw()
@@ -75,10 +77,18 @@ class Game:
                     self.player.move(dy=-1)
                 if event.key == pygame.K_DOWN:
                     self.player.move(dy=1)
+
         self.monstro.move(dx = random.randint(-1,1))
         self.monstro.move(dy = random.randint(-1,1))
 
+        self.monstro2.move(dx = random.randint(-1,1))
+        self.monstro2.move(dy = random.randint(-1,1))
 
+        self.monstrot1.move(dx = random.randint(-1,1))
+        self.monstrot1.move(dy = random.randint(-1,1))
+
+        self.monstrot2.move(dx = random.randint(-1,1))
+        self.monstrot2.move(dy = random.randint(-1,1))
 
 # Cria o objeto do jogo
 game = Game()
