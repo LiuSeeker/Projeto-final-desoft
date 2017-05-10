@@ -1,4 +1,5 @@
 import pygame
+
 import sys
 import random
 from os import path
@@ -18,7 +19,7 @@ class Game:
     def new(self):
         self.all_sprites = pygame.sprite.Group()
         self.paredes = pygame.sprite.Group()
-        self.monstro = Monstro(self, 10, 10, GREEN)
+        self.monstro = Monstro(self, 9, 9, GREEN)
 
 
         #cria as apredes a partir do "map_data"
