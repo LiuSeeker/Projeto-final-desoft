@@ -14,6 +14,7 @@ class Game:
         pygame.display.set_caption(TITLE)
         self.clock = pygame.time.Clock()
         game_folder = path.dirname(__file__)
+        self.img_dir = path.join(path.dirname(__file__), "sprites")
         self.map = Map(path.join(game_folder, 'mapa.txt'))
 
     def new(self):
@@ -28,7 +29,7 @@ class Game:
                 if tile == "1":
                     Parede(self, col, row)
                 if tile == "P":
-                    self.player = Player(self, col * TILESIZE, row * TILESIZE)
+                    self.player = Player(self, col * TILESIZE, row * TILESIZE, "soldier.png")
 
     def run(self):
         # Loop do jogo 
