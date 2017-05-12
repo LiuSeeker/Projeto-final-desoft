@@ -46,7 +46,7 @@ class Player(pygame.sprite.Sprite):
         self.groups = game.all_sprites
         pygame.sprite.Sprite.__init__(self, self.groups)
         self.game = game
-        self.image = pygame.transform.scale(pygame.image.load(path.join(game.img_dir, img)).convert(), (TILESIZE,TILESIZE))
+        self.image = pygame.transform.scale(pygame.image.load(path.join(game.img_dir, img)).convert_alpha(), (TILESIZE,TILESIZE))
         #self.image = pygame.Surface((TILESIZE, TILESIZE))
         #self.image.fill(YELLOW)
         self.rect = self.image.get_rect()
