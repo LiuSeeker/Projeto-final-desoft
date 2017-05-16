@@ -4,12 +4,16 @@ from setting import *
 
 
 class Monstro(pygame.sprite.Sprite):
-    def __init__(self, game, x, y, cor):
+    def __init__(self, game, x, y, tipo):
         self.groups = game.all_sprites
         pygame.sprite.Sprite.__init__(self, self.groups)
-        self.game = game 
-        self.image = pygame.Surface((TILESIZE,TILESIZE)) #tamanho da imagem
-        self.image.fill(cor)
+        self.game = game
+        self.img_dir = path.join(path.dirname(__file__), "sprites\monstro")
+        self.tipos = {"snake": 15}
+        self.imagens = [tipo+"f.png", tipo+"l.png", tipo+"r.png", tipo+"b.png"]
+        self.image = pygame.transform.scale(pygame.image.load(path.join(self.img_dir, self.imagens[0])).convert_alpha(), (self.tipos["snake"],TILESIZE))
+        #self.image = pygame.Surface((TILESIZE,TILESIZE)) #tamanho da imagem
+        #self.image.fill(cor)
         self.rect = self.image.get_rect() 
         self.x = x
         self.y = y
@@ -42,11 +46,13 @@ class Monstro(pygame.sprite.Sprite):
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, game, x, y, img):
+    def __init__(self, game, x, y):
         self.groups = game.all_sprites
         pygame.sprite.Sprite.__init__(self, self.groups)
         self.game = game
-        self.image = pygame.transform.scale(pygame.image.load(path.join(game.img_dir, img)).convert_alpha(), (TILESIZE,TILESIZE))
+        self.img_dir = path.join(path.dirname(__file__), "sprites\soldier")
+        self.imagens = ["soldierf.png", "soldierl.png", "soldierr.png", "soldierb.png"]
+        self.image = pygame.transform.scale(pygame.image.load(path.join(self.img_dir, self.imagens[0])).convert_alpha(), (25,TILESIZE))
         #self.image = pygame.Surface((TILESIZE, TILESIZE))
         #self.image.fill(YELLOW)
         self.rect = self.image.get_rect()
@@ -60,12 +66,16 @@ class Player(pygame.sprite.Sprite):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_a]:
             self.vx = -VEL_JOGADOR
+            self.image = pygame.transform.scale(pygame.image.load(path.join(self.img_dir, self.imagens[1])).convert_alpha(), (25,TILESIZE))
         if keys[pygame.K_d]:
             self.vx = VEL_JOGADOR
+            self.image = pygame.transform.scale(pygame.image.load(path.join(self.img_dir, self.imagens[2])).convert_alpha(), (25,TILESIZE))
         if keys[pygame.K_w]:
             self.vy = -VEL_JOGADOR
+            self.image = pygame.transform.scale(pygame.image.load(path.join(self.img_dir, self.imagens[3])).convert_alpha(), (25,TILESIZE))
         if keys[pygame.K_s]:
             self.vy = VEL_JOGADOR
+            self.image = pygame.transform.scale(pygame.image.load(path.join(self.img_dir, self.imagens[0])).convert_alpha(), (25,TILESIZE))
         if self.vx != 0 and self.vy != 0:
             self.vx *= 0.7071
             self.vy *= 0.7071

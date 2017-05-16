@@ -14,13 +14,12 @@ class Game:
         pygame.display.set_caption(TITLE)
         self.clock = pygame.time.Clock()
         game_folder = path.dirname(__file__)
-        self.img_dir = path.join(path.dirname(__file__), "sprites")
         self.map = Map(path.join(game_folder, 'mapa.txt'))
 
     def new(self):
         self.all_sprites = pygame.sprite.Group()
         self.paredes = pygame.sprite.Group()
-        self.monstro = Monstro(self, 9, 9, GREEN)
+        self.monstro = Monstro(self, 9, 9, "snake")
 
 
         #cria as apredes a partir do "map_data"
@@ -29,7 +28,7 @@ class Game:
                 if tile == "1":
                     Parede(self, col, row)
                 if tile == "P":
-                    self.player = Player(self, col * TILESIZE, row * TILESIZE, "soldier.png")
+                    self.player = Player(self, col * TILESIZE, row * TILESIZE)
 
     def run(self):
         # Loop do jogo 
