@@ -9,7 +9,6 @@ from Mapa import *
 class Tela:
     def __init__(self, game):
         game_folder = path.dirname(__file__)
-        self.img_dir = path.join(path.dirname(__file__), "sprites")
         self.map = Map(path.join(game_folder, 'mapa.txt'))
         self.game = game
         self.clock = pygame.time.Clock()
@@ -18,7 +17,8 @@ class Tela:
     def new(self):
         self.all_sprites = pygame.sprite.Group()
         self.paredes = pygame.sprite.Group()
-        self.monstro = Monstro(self, 9, 9, "snake")
+        self.monstro = Monstro(self, 9 * TILESIZE, 9 * TILESIZE, "snake")
+
         #cria as apredes a partir do "map_data"
         for row, tiles in enumerate(self.map.data): #"row" retorna a posição na lista, "tiles" retorna a string
             for col, tile in enumerate(tiles): #"col" retorna a posição na string, "tile" retorna o caractere
@@ -26,6 +26,7 @@ class Tela:
                     Parede(self, col, row)
                 if tile == "P":
                     self.player = Player(self, col * TILESIZE, row * TILESIZE)
+
     def draw(self):
         self.all_sprites.draw(game.screen)
 
