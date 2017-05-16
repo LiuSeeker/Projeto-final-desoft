@@ -17,6 +17,7 @@ class Tela:
     def new(self):
         self.all_sprites = pygame.sprite.Group()
         self.paredes = pygame.sprite.Group()
+        self.monstros = pygame.sprite.Group()
         self.monstro = Monstro(self, 9 * TILESIZE, 9 * TILESIZE, "snake")
 
         #cria as apredes a partir do "map_data"

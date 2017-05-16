@@ -6,7 +6,7 @@ from random import randint
 
 class Monstro(pygame.sprite.Sprite):
     def __init__(self, tela, x, y, tipo):
-        self.groups = tela.all_sprites
+        self.groups = tela.all_sprites, tela.monstros
         pygame.sprite.Sprite.__init__(self, self.groups)
         self.tela = tela
         self.img_dir = path.join(path.dirname(__file__), "sprites\monstro")
@@ -104,18 +104,34 @@ class Player(pygame.sprite.Sprite):
             self.vy *= 0.7071
 
     def colisao_parede(self, dir):
-        if dir == 'x':
-            colisao = pygame.sprite.spritecollide(self,self.tela.paredes,False)
-            if colisao:
+        colisao = pygame.sprite.spritecollide(self,self.tela.paredes,False)
+        if colisao:
+            if dir == 'x':
                 if self.vx > 0:
                     self.x = colisao[0].rect.left - self.rect.width
                 if self.vx < 0:
                     self.x = colisao[0].rect.right
                 self.vx = 0
                 self.rect.x = self.x
-        if dir == 'y':
-            colisao = pygame.sprite.spritecollide(self,self.tela.paredes,False)
-            if colisao:
+            if dir == 'y':
+                if self.vy > 0:
+                    self.y = colisao[0].rect.top - self.rect.height
+                if self.vy < 0:
+                    self.y = colisao[0].rect.bottom 
+                self.vy = 0
+                self.rect.y = self.y
+
+    def colisao_monstro(self, dir):
+        colisao = pygame.sprite.spritecollide(self,self.tela.monstros,False)
+        if colisao:
+            if dir == 'x':
+                if self.vx > 0:
+                    self.x = colisao[0].rect.left - self.rect.width
+                if self.vx < 0:
+                    self.x = colisao[0].rect.right
+                self.vx = 0
+                self.rect.x = self.x
+            if dir == 'y':
                 if self.vy > 0:
                     self.y = colisao[0].rect.top - self.rect.height
                 if self.vy < 0:
@@ -130,10 +146,10 @@ class Player(pygame.sprite.Sprite):
         self.y += self.vy * self.tela.dt
         self.rect.x = self.x
         self.colisao_parede('x')
-        #self.colisao_monstro('x')
+        self.colisao_monstro('x')
         self.rect.y = self.y
         self.colisao_parede('y')
-        #self.colisao_monstro('y')
+        self.colisao_monstro('y')
         if self.rect.right > WIDTH:
             self.rect.right = WIDTH
         if self.rect.left < 0:
