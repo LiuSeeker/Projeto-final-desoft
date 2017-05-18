@@ -3,21 +3,20 @@ from os import path
 from setting import *
 from random import randint
 
+vec = pygame.math.Vector2
+
 
 class Monstro(pygame.sprite.Sprite):
     def __init__(self, tela, x, y, tipo):
-        self.groups = tela.all_sprites, tela.monstros
+        self.groups = tela.all_sprites, tela.monstros, tela.visiveis
         pygame.sprite.Sprite.__init__(self, self.groups)
         self.tela = tela
+        self.tipo = tipo
         self.img_dir = path.join(path.dirname(__file__), "sprites\monstro")
-        self.tipos = {"snake": 15}
-        self.imagens = [tipo+"f.png", tipo+"l.png", tipo+"r.png", tipo+"b.png"]
-        self.image = pygame.transform.scale(pygame.image.load(path.join(self.img_dir, self.imagens[0])).convert_alpha(), (self.tipos["snake"],TILESIZE))
-        #self.image = pygame.Surface((TILESIZE,TILESIZE)) #tamanho da imagem
-        #self.image.fill(cor)
+        self.image = pygame.transform.scale(pygame.image.load(path.join(self.img_dir, self.tipo["f"])).convert_alpha(), (self.tipo["width"],self.tipo["height"]))
         self.rect = self.image.get_rect() 
-        self.x = x
-        self.y = y
+        self.x = x * TILESIZE
+        self.y = y * TILESIZE
         self.vx = 0
         self.vy = 0
         self.count = 0 
@@ -25,14 +24,14 @@ class Monstro(pygame.sprite.Sprite):
     def muda_vel(self):
         self.vx = 0
         self.vy = 0
-        self.vx = randint(-VEL_MONSTRO, VEL_MONSTRO)
-        self.vy = randint(-VEL_MONSTRO, VEL_MONSTRO)
+        self.vx = randint(-self.tipo["vel"], self.tipo["vel"])
+        self.vy = randint(-self.tipo["vel"], self.tipo["vel"])
         if self.vx != 0 and self.vy != 0:
             self.vx *= 0.7071
             self.vy *= 0.7071
 
     def move(self):
-        if self.count <= 500:
+        if self.count <= self.tipo["count"]:
             self.x += self.vx * self.tela.dt
             self.y += self.vy * self.tela.dt
             self.rect.x = self.x
@@ -100,39 +99,52 @@ class Monstro(pygame.sprite.Sprite):
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, tela, x, y):
-        self.groups = tela.all_sprites, tela.players
+    def __init__(self, tela, x, y, tipo):
+        self.groups = tela.all_sprites, tela.players, tela.visiveis
         pygame.sprite.Sprite.__init__(self, self.groups)
         self.tela = tela
+        self.tipo = tipo
         self.img_dir = path.join(path.dirname(__file__), "sprites\soldier")
-        self.imagens = ["soldierf.png", "soldierl.png", "soldierr.png", "soldierb.png"]
-        self.image = pygame.transform.scale(pygame.image.load(path.join(self.img_dir, self.imagens[0])).convert_alpha(), (25,TILESIZE))
-        #self.image = pygame.Surface((TILESIZE, TILESIZE))
-        #self.image.fill(YELLOW)
+        self.image = pygame.transform.scale(pygame.image.load(path.join(self.img_dir, self.tipo["f"])).convert_alpha(), (self.tipo["width"],self.tipo["height"]))
         self.rect = self.image.get_rect()
         self.rect.center = (x,y)
-        self.x = x
-        self.y = y
+        self.x = x * TILESIZE
+        self.y = y * TILESIZE
+        self.rot = 0
+        self.last_melee = 0
+        self.melee_cd = 200
 
     def get_keys(self):
         self.vx = 0
         self.vy = 0
         keys = pygame.key.get_pressed()
         if keys[pygame.K_a]:
-            self.vx = -VEL_JOGADOR
-            self.image = pygame.transform.scale(pygame.image.load(path.join(self.img_dir, self.imagens[1])).convert_alpha(), (25,TILESIZE))
+            self.vx = -self.tipo["vel"]
+            self.image = pygame.transform.scale(pygame.image.load(path.join(self.img_dir, self.tipo["l"])).convert_alpha(), (self.tipo["width"], self.tipo["height"]))
+            self.dir = 90
         if keys[pygame.K_d]:
-            self.vx = VEL_JOGADOR
-            self.image = pygame.transform.scale(pygame.image.load(path.join(self.img_dir, self.imagens[2])).convert_alpha(), (25,TILESIZE))
+            self.vx = self.tipo["vel"]
+            self.image = pygame.transform.scale(pygame.image.load(path.join(self.img_dir, self.tipo["r"])).convert_alpha(), (self.tipo["width"], self.tipo["height"]))
+            self.dir = 0
         if keys[pygame.K_w]:
-            self.vy = -VEL_JOGADOR
-            self.image = pygame.transform.scale(pygame.image.load(path.join(self.img_dir, self.imagens[3])).convert_alpha(), (25,TILESIZE))
+            self.vy = -self.tipo["vel"]
+            self.image = pygame.transform.scale(pygame.image.load(path.join(self.img_dir, self.tipo["b"])).convert_alpha(), (self.tipo["width"], self.tipo["height"]))
+            self.dir = 180
         if keys[pygame.K_s]:
-            self.vy = VEL_JOGADOR
-            self.image = pygame.transform.scale(pygame.image.load(path.join(self.img_dir, self.imagens[0])).convert_alpha(), (25,TILESIZE))
+            self.vy = self.tipo["vel"]
+            self.image = pygame.transform.scale(pygame.image.load(path.join(self.img_dir, self.tipo["f"])).convert_alpha(), (self.tipo["width"], self.tipo["height"]))
+            self.dir = -90
         if self.vx != 0 and self.vy != 0:
             self.vx *= 0.7071
             self.vy *= 0.7071
+        if keys[pygame.K_SPACE]:
+            now = pygame.time.get_ticks()
+            self.vx *= 0.5
+            self.vy *= 0.5
+            if now - self.last_melee > self.melee_cd:
+                self.last_melee = now
+                dir = vec(1,0).rotate(-self.rot)
+                Melee(self.tela, (self.x + self.tipo["width"]/2, self.y + 3*TILESIZE/2), dir)
 
     def colisao_parede(self, dir):
         colisao = pygame.sprite.spritecollide(self,self.tela.paredes,False)
@@ -190,15 +202,39 @@ class Player(pygame.sprite.Sprite):
         if self.rect.bottom > HEIGHT:
             self.rect.bottom = HEIGHT
 
+
+
 class Parede(pygame.sprite.Sprite):
     def __init__(self, tela, x, y):
         self.groups = tela.all_sprites, tela.paredes
         pygame.sprite.Sprite.__init__(self, self.groups)
         self.tela = tela
         self.image = pygame.Surface((TILESIZE, TILESIZE))
-        self.image.fill(BLACK)
         self.rect = self.image.get_rect()
         self.x = x
         self.y = y
         self.rect.x = x * TILESIZE
         self.rect.y = y * TILESIZE
+
+class Melee(pygame.sprite.Sprite):
+    def __init__(self, tela, pos, dir):
+        self.groups = tela.all_sprites, tela.ataques, tela.visiveis
+        pygame.sprite.Sprite.__init__(self, self.groups)
+        self.tela = tela
+        self.image = pygame.Surface((TILESIZE, TILESIZE))
+        self.image.fill(YELLOW)
+        #self.img_dir = path.join(path.dirname(__file__), "sprites\monstro")
+        #self.image = pygame.transform.scale(pygame.image.load(path.join(self.img_dir, self.tipo["f"])).convert_alpha(), (self.tipo["width"],self.tipo["height"]))
+        self.rect = self.image.get_rect() 
+        self.pos = vec(pos)
+        self.rect.center = pos
+        self.speed_melee = 50
+        self.vel = dir * self.speed_melee
+        self.spawn_time = pygame.time.get_ticks()
+        self.lifetime = 10
+
+    def update(self):
+        self.pos += self.vel * self.tela.dt
+        self.rect.center = self.pos
+        if pygame.time.get_ticks() - self.spawn_time > self.lifetime:
+            self.kill()

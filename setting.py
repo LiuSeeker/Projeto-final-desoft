@@ -18,5 +18,5 @@ TILESIZE = 32
 GRIDWIDTH = WIDTH / TILESIZE
 GRIDHEIGHT = HEIGHT / TILESIZE
 
-VEL_JOGADOR = 200
-VEL_MONSTRO = 100
+snake = {"nome": "snake", "vel": 50, "count": 300, "width": 15, "height": TILESIZE, "vida": 5, "dano": 1, "f": "snakef.png", "b": "snakeb.png", "r": "snaker.png", "l": "snakel.png"}
+jogador ={"nome": "player", "vel": 100, "width": 25, "height": TILESIZE, "vida": 25, "dano": 2, "f": "soldierf.png", "b": "soldierb.png", "r": "soldierr.png", "l": "soldierl.png"}
