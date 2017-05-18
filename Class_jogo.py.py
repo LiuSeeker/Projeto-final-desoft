@@ -20,9 +20,10 @@ class Tela:
         self.all_sprites = pygame.sprite.Group()
         self.paredes = pygame.sprite.Group()
         self.visiveis = pygame.sprite.Group()
+        self.monstros = pygame.sprite.Group()
         self.monstro = Monstro(self, 9 * TILESIZE, 9 * TILESIZE, "snake")
 
-        #cria as apredes a partir do "map_data"d
+        #cria as apredes a partir do "map_data"
         for row, tiles in enumerate(self.map.data): #"row" retorna a posição na lista, "tiles" retorna a string
             for col, tile in enumerate(tiles): #"col" retorna a posição na string, "tile" retorna o caractere
                 if tile == "1":
