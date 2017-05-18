@@ -12,12 +12,13 @@ class Tela:
         self.map = Map(path.join(game_folder, 'mapa.txt'))
         self.game = game
         self.clock = pygame.time.Clock()
-        self.dt = self.clock.tick(FPS) / 5000
+        self.dt = self.clock.tick(FPS) / 4000
         
     def new(self):
         self.all_sprites = pygame.sprite.Group()
         self.paredes = pygame.sprite.Group()
         self.monstros = pygame.sprite.Group()
+        self.players = pygame.sprite.Group()
         self.monstro = Monstro(self, 9 * TILESIZE, 9 * TILESIZE, "snake")
 
         #cria as apredes a partir do "map_data"

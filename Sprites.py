@@ -18,8 +18,11 @@ class Monstro(pygame.sprite.Sprite):
         self.rect = self.image.get_rect() 
         self.x = x
         self.y = y
+        self.vx = 0
+        self.vy = 0
+        self.count = 0 
 
-    def move(self):
+    def muda_vel(self):
         self.vx = 0
         self.vy = 0
         self.vx = randint(-VEL_MONSTRO, VEL_MONSTRO)
@@ -27,6 +30,29 @@ class Monstro(pygame.sprite.Sprite):
         if self.vx != 0 and self.vy != 0:
             self.vx *= 0.7071
             self.vy *= 0.7071
+
+    def move(self):
+        if self.count <= 500:
+            self.x += self.vx * self.tela.dt
+            self.y += self.vy * self.tela.dt
+            self.rect.x = self.x
+            self.colisao_parede('x')
+            self.colisao_player('x')
+            self.rect.y = self.y
+            self.colisao_parede('y')
+            self.colisao_player('y')
+            if self.rect.right > WIDTH:
+                self.rect.right = WIDTH
+            if self.rect.left < 0:
+                self.rect.left = 0
+            if self.rect.top < 0:
+                self.rect.top = 0 
+            if self.rect.bottom > HEIGHT:
+                self.rect.bottom = HEIGHT
+            self.count += 1
+        else:
+            self.muda_vel()
+            self.count = 0
 
     def colisao_parede(self, dir):
         if dir == 'x':
@@ -48,29 +74,34 @@ class Monstro(pygame.sprite.Sprite):
                 self.vy = 0
                 self.rect.y = self.y
 
+    def colisao_player(self, dir):
+        if dir == 'x':
+            colisao = pygame.sprite.spritecollide(self,self.tela.players,False)
+            if colisao:
+                if self.vx > 0:
+                    self.x = colisao[0].rect.left - self.rect.width
+                if self.vx < 0:
+                    self.x = colisao[0].rect.right
+                self.vx = 0
+                self.rect.x = self.x
+        if dir == 'y':
+            colisao = pygame.sprite.spritecollide(self,self.tela.players,False)
+            if colisao:
+                if self.vy > 0:
+                    self.y = colisao[0].rect.top - self.rect.height
+                if self.vy < 0:
+                    self.y = colisao[0].rect.bottom 
+                self.vy = 0
+                self.rect.y = self.y
 
     def update(self):
         self.move()
-        self.x += self.vx * self.tela.dt/100
-        self.y += self.vy * self.tela.dt/100
-        self.rect.x = self.x
-        self.colisao_parede('x')
-        self.rect.y = self.y
-        self.colisao_parede('y')
-        if self.rect.right > WIDTH:
-            self.rect.right = WIDTH
-        if self.rect.left < 0:
-            self.rect.left = 0
-        if self.rect.top < 0:
-            self.rect.top = 0 
-        if self.rect.bottom > HEIGHT:
-            self.rect.bottom = HEIGHT
     
 
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, tela, x, y):
-        self.groups = tela.all_sprites
+        self.groups = tela.all_sprites, tela.players
         pygame.sprite.Sprite.__init__(self, self.groups)
         self.tela = tela
         self.img_dir = path.join(path.dirname(__file__), "sprites\soldier")
