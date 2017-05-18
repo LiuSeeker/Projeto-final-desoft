@@ -7,14 +7,13 @@ from random import randint
 class Monstro(pygame.sprite.Sprite):
     def __init__(self, tela, x, y, tipo):
         self.groups = tela.all_sprites
+        self.groups = tela.visiveis
         pygame.sprite.Sprite.__init__(self, self.groups)
         self.tela = tela
         self.img_dir = path.join(path.dirname(__file__), "sprites\monstro")
         self.tipos = {"snake": 15}
         self.imagens = [tipo+"f.png", tipo+"l.png", tipo+"r.png", tipo+"b.png"]
         self.image = pygame.transform.scale(pygame.image.load(path.join(self.img_dir, self.imagens[0])).convert_alpha(), (self.tipos["snake"],TILESIZE))
-        #self.image = pygame.Surface((TILESIZE,TILESIZE)) #tamanho da imagem
-        #self.image.fill(cor)
         self.rect = self.image.get_rect() 
         self.x = x
         self.y = y
@@ -71,13 +70,12 @@ class Monstro(pygame.sprite.Sprite):
 class Player(pygame.sprite.Sprite):
     def __init__(self, tela, x, y):
         self.groups = tela.all_sprites
+        self.groups = tela.visiveis
         pygame.sprite.Sprite.__init__(self, self.groups)
         self.tela = tela
         self.img_dir = path.join(path.dirname(__file__), "sprites\soldier")
         self.imagens = ["soldierf.png", "soldierl.png", "soldierr.png", "soldierb.png"]
         self.image = pygame.transform.scale(pygame.image.load(path.join(self.img_dir, self.imagens[0])).convert_alpha(), (25,TILESIZE))
-        #self.image = pygame.Surface((TILESIZE, TILESIZE))
-        #self.image.fill(YELLOW)
         self.rect = self.image.get_rect()
         self.rect.center = (x,y)
         self.x = x
@@ -130,10 +128,8 @@ class Player(pygame.sprite.Sprite):
         self.y += self.vy * self.tela.dt
         self.rect.x = self.x
         self.colisao_parede('x')
-        #self.colisao_monstro('x')
         self.rect.y = self.y
         self.colisao_parede('y')
-        #self.colisao_monstro('y')
         if self.rect.right > WIDTH:
             self.rect.right = WIDTH
         if self.rect.left < 0:
@@ -149,7 +145,6 @@ class Parede(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self, self.groups)
         self.tela = tela
         self.image = pygame.Surface((TILESIZE, TILESIZE))
-        self.image.fill(BLACK)
         self.rect = self.image.get_rect()
         self.x = x
         self.y = y
