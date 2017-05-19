@@ -2,18 +2,19 @@ import pygame
 import sys
 from random import randint
 from os import path
+from math import hypot
 from setting import *
 from Sprites import *
 from Mapa import *
 
 class Tela:
-    def __init__(self, game):
+    def __init__(self, game, mapa):
         game_folder = path.dirname(__file__)
-        self.map = Map(path.join(game_folder, 'matriz_teste.txt'))
+        self.map = Map(path.join(game_folder, mapa))
         self.game = game
         self.clock = pygame.time.Clock()
         self.dt = self.clock.tick(FPS) / 4000
-        self.back = pygame.image.load("teste.png")
+        self.back = pygame.image.load(mapas[mapa])
         self.game.screen.blit(self.back, (0,0))
         
     def new(self):
@@ -24,7 +25,6 @@ class Tela:
         self.players = pygame.sprite.Group()
         self.ataques = pygame.sprite.Group()
 
-        self.monstro = Monstro(self, 9, 9, snake)
         #cria as apredes a partir do "map_data"
         for row, tiles in enumerate(self.map.data): #"row" retorna a posição na lista, "tiles" retorna a string
             for col, tile in enumerate(tiles): #"col" retorna a posição na string, "tile" retorna o caractere
@@ -32,6 +32,8 @@ class Tela:
                     Parede(self, col, row)
                 if tile == "P":
                     self.player = Player(self, col, row, jogador)
+                if tile == "S":
+                	Monstro(self, col, row, snake)
 
     def draw(self):
         self.visiveis.draw(game.screen)
@@ -41,7 +43,7 @@ class Game:
         pygame.init()
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
         pygame.display.set_caption(TITLE)
-        self.tela = Tela(self)
+        self.tela = Tela(self, "matriz_teste.txt")
 
     def run(self):
         # Loop do jogo 
