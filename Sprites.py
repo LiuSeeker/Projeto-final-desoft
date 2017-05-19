@@ -143,7 +143,7 @@ class Player(pygame.sprite.Sprite):
         self.rect.center = (x,y)
         self.x = x * TILESIZE
         self.y = y * TILESIZE
-        self.rot = 0
+        self.direcao = 0
         self.last_melee = 0
         self.melee_cd = 600
 
@@ -154,19 +154,20 @@ class Player(pygame.sprite.Sprite):
         if keys[pygame.K_a]:
             self.vx = -self.tipo["vel"]
             self.image = pygame.transform.scale(pygame.image.load(path.join(self.img_dir, self.tipo["l"])).convert_alpha(), (self.tipo["width"], self.tipo["height"]))
-            self.dir = 0
+            self.direcao = (-1, 0)
         if keys[pygame.K_d]:
             self.vx = self.tipo["vel"]
             self.image = pygame.transform.scale(pygame.image.load(path.join(self.img_dir, self.tipo["r"])).convert_alpha(), (self.tipo["width"], self.tipo["height"]))
             self.dir = self.x + self.tipo["width"]/2, self.y + 3*TILESIZE/2
+            self.direcao = (1, 0)
         if keys[pygame.K_w]:
             self.vy = -self.tipo["vel"]
             self.image = pygame.transform.scale(pygame.image.load(path.join(self.img_dir, self.tipo["b"])).convert_alpha(), (self.tipo["width"], self.tipo["height"]))
-            self.rot = 180 % 360
+            self.direcao = (0, -1)
         if keys[pygame.K_s]:
             self.vy = self.tipo["vel"]
             self.image = pygame.transform.scale(pygame.image.load(path.join(self.img_dir, self.tipo["f"])).convert_alpha(), (self.tipo["width"], self.tipo["height"]))
-            self.rot = -90 % 360
+            self.direcao = (0, 1)
         if self.vx != 0 and self.vy != 0:
             self.vx *= 0.7071
             self.vy *= 0.7071
@@ -176,8 +177,7 @@ class Player(pygame.sprite.Sprite):
             now = pygame.time.get_ticks()
             if now - self.last_melee > self.melee_cd:
                 self.last_melee = now
-                dir = vec(1,0).rotate(-self.rot)
-                Melee(self.tela, (self.x + self.tipo["width"]/2, self.y + 3*TILESIZE/2), dir)
+                Melee(self.tela, (self.x + self.tipo["width"]/2 + self.direcao[0] * TILESIZE, self.y + self.tipo["height"] /2 + self.direcao[1] * TILESIZE))
 
     def colisao_parede(self, dir):
         colisao = pygame.sprite.spritecollide(self,self.tela.paredes,False)
@@ -250,14 +250,12 @@ class Parede(pygame.sprite.Sprite):
 
 
 class Melee(pygame.sprite.Sprite):
-    def __init__(self, tela, pos, dir):
+    def __init__(self, tela, pos):
         self.groups = tela.all_sprites, tela.ataques, tela.visiveis
         pygame.sprite.Sprite.__init__(self, self.groups)
         self.tela = tela
         self.image = pygame.Surface((TILESIZE, TILESIZE))
         self.image.fill(YELLOW)
-        #self.img_dir = path.join(path.dirname(__file__), "sprites\soldier")
-        #self.image = pygame.transform.scale(pygame.image.load(path.join(self.img_dir, self.tipo["f"])).convert_alpha(), (self.tipo["width"],self.tipo["height"]))
         self.rect = self.image.get_rect() 
         self.pos = vec(pos)
         self.rect.center = pos
