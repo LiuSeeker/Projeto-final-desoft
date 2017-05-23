@@ -2,7 +2,6 @@ import pygame
 from os import path
 from setting import *
 from random import randint
-from math import hypot
 
 vec = pygame.math.Vector2
 
@@ -55,10 +54,10 @@ class Monstro(pygame.sprite.Sprite):
             if self.rect.left < 0:
                 self.rect.left = 0
             if self.rect.top < 0:
-                self.rect.top = 0 
+                self.rect.top = 0
             if self.rect.bottom > HEIGHT:
                 self.rect.bottom = HEIGHT
-            self.count += 1
+                self.count += 1
         else:
             self.muda_vel()
             self.count = 0
@@ -146,6 +145,11 @@ class Player(pygame.sprite.Sprite):
         self.direcao = 0
         self.last_melee = 0
         self.melee_cd = 600
+        self.in_mapr = True
+        self.in_mapl = True
+        self.in_mapu = True
+        self.in_mapd = True
+
 
     def get_keys(self):
         self.vx = 0
@@ -193,7 +197,7 @@ class Player(pygame.sprite.Sprite):
                 if self.vy > 0:
                     self.y = colisao[0].rect.top - self.rect.height
                 if self.vy < 0:
-                    self.y = colisao[0].rect.bottom 
+                    self.y = colisao[0].rect.bottom
                 self.vy = 0
                 self.rect.y = self.y
 
@@ -215,6 +219,20 @@ class Player(pygame.sprite.Sprite):
                 self.vy = 0
                 self.rect.y = self.y
 
+    def colisao_trans(self):
+        colisaor = pygame.sprite.spritecollide(self,self.tela.transr,False)
+        colisaol = pygame.sprite.spritecollide(self,self.tela.transl,False)
+        colisaou = pygame.sprite.spritecollide(self,self.tela.transu,False)
+        colisaod = pygame.sprite.spritecollide(self,self.tela.transd,False)
+        if colisaor:
+            self.in_mapr = False
+        if colisaol:
+            self.in_mapl = False
+        if colisaou:
+            self.in_mapu = False
+        if colisaod:
+            self.in_mapd = False
+
 
     def update(self):
         self.get_keys()
@@ -226,14 +244,19 @@ class Player(pygame.sprite.Sprite):
         self.rect.y = self.y
         self.colisao_parede('y')
         self.colisao_monstro('y')
+        self.colisao_trans()
         if self.rect.right > WIDTH:
             self.rect.right = WIDTH
+            self.x -= self.vx * self.tela.dt
         if self.rect.left < 0:
             self.rect.left = 0
+            self.x -= self.vx * self.tela.dt
         if self.rect.top < 0:
-            self.rect.top = 0 
+            self.rect.top = 0
+            self.y -= self.vy * self.tela.dt
         if self.rect.bottom > HEIGHT:
             self.rect.bottom = HEIGHT
+            self.y -= self.vy * self.tela.dt
 
 
 class Parede(pygame.sprite.Sprite):
@@ -248,6 +271,53 @@ class Parede(pygame.sprite.Sprite):
         self.rect.x = x * TILESIZE
         self.rect.y = y * TILESIZE + TILESIZE * 0.2
 
+class Transicao_right(pygame.sprite.Sprite):
+    def __init__(self, tela, x, y):
+        self.groups = tela.all_sprites, tela.transr
+        pygame.sprite.Sprite.__init__(self, self.groups)
+        self.tela = tela
+        self.image = pygame.Surface((TILESIZE, TILESIZE))
+        self.rect = self.image.get_rect()
+        self.x = x
+        self.y = y
+        self.rect.x = x * TILESIZE
+        self.rect.y = y * TILESIZE
+
+class Transicao_left(pygame.sprite.Sprite):
+    def __init__(self, tela, x, y):
+        self.groups = tela.all_sprites, tela.transl
+        pygame.sprite.Sprite.__init__(self, self.groups)
+        self.tela = tela
+        self.image = pygame.Surface((TILESIZE, TILESIZE))
+        self.rect = self.image.get_rect()
+        self.x = x
+        self.y = y
+        self.rect.x = x * TILESIZE
+        self.rect.y = y * TILESIZE
+
+class Transicao_up(pygame.sprite.Sprite):
+    def __init__(self, tela, x, y):
+        self.groups = tela.all_sprites, tela.transu
+        pygame.sprite.Sprite.__init__(self, self.groups)
+        self.tela = tela
+        self.image = pygame.Surface((TILESIZE, TILESIZE))
+        self.rect = self.image.get_rect()
+        self.x = x
+        self.y = y
+        self.rect.x = x * TILESIZE
+        self.rect.y = y * TILESIZE
+
+class Transicao_down(pygame.sprite.Sprite):
+    def __init__(self, tela, x, y):
+        self.groups = tela.all_sprites, tela.transd
+        pygame.sprite.Sprite.__init__(self, self.groups)
+        self.tela = tela
+        self.image = pygame.Surface((TILESIZE, TILESIZE))
+        self.rect = self.image.get_rect()
+        self.x = x
+        self.y = y
+        self.rect.x = x * TILESIZE
+        self.rect.y = y * TILESIZE
 
 class Melee(pygame.sprite.Sprite):
     def __init__(self, tela, pos):
