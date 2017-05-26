@@ -11,7 +11,7 @@ YELLOW = (255, 255, 0)
 WIDTH = 32*35
 HEIGHT = 32*21
 FPS = 60
-TITLE = "Rpgzin"
+TITLE = "The Legend of Ayres"
 
 TILESIZE = 32
 
