@@ -11,14 +11,45 @@ YELLOW = (255, 255, 0)
 WIDTH = 32*35
 HEIGHT = 32*21
 FPS = 60
-TITLE = "Rpgzin"
+TITLE = "The Legend of Ayres"
 
 TILESIZE = 32
 GRIDWIDTH = WIDTH / TILESIZE
 GRIDHEIGHT = HEIGHT / TILESIZE
 
-mapas = {"matriz_teste.txt": {"imagem": "teste.png", "l": "matriz_mapa_inicial.txt"},
+#Configuracoes do jogador
+
+
+#Configuraçoes de dano
+
+
+mapas = {"matriz_teste.txt": {"imagem": "teste.png", "r": "matriz_mapa_inicial.txt"},
 		"matriz_mapa_inicial.txt": {"imagem": "mapa_inicial.png", "l": "matriz_teste.txt", "r": "matriz_teste.txt"}}
 
-snake = {"nome": "snake", "vel": 40, "count": 300, "width": 15, "height": TILESIZE, "vida": 5, "dano": 1, "f": "snakef.png", "b": "snakeb.png", "r": "snaker.png", "l": "snakel.png"}
-jogador ={"nome": "player", "vel": 100, "width": 25, "height": TILESIZE, "vida": 25, "dano": 2, "f": "soldierf.png", "b": "soldierb.png", "r": "soldierr.png", "l": "soldierl.png"}
+snake = {
+		 "nome": "snake",
+		  	   "vel": 40,
+		    "count": 300,
+		     "width": 15,
+	  "height": TILESIZE,
+	  		   "vida": 5,
+	  		   "dano": 1,
+	   "f": "snakef.png",
+	   "b": "snakeb.png",
+	   "r": "snaker.png",
+	   "l": "snakel.png"
+	   }
+
+jogador ={
+		  "nome": "player",
+ 				"vel": 100,
+  			   "width": 25,
+   		"height": TILESIZE,
+   			    "vida": 25,
+   			     "dano": 2,
+   	   "f": "soldierf.png",
+   	   "b": "soldierb.png",
+   	   "r": "soldierr.png",
+   	    "l": "soldierl.png"
+   	    }
+
