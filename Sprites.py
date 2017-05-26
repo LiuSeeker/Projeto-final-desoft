@@ -39,7 +39,7 @@ class Monstro(pygame.sprite.Sprite):
         if self.vy < 0:
             self.image = pygame.transform.scale(pygame.image.load(path.join(self.img_dir, self.tipo["b"])).convert_alpha(), (self.tipo["width"],self.tipo["height"]))
         
-    def move(self):
+    def move_aleatorio(self):
         if self.count <= self.tipo["count"]:
             self.x += self.vx * self.tela.dt
             self.y += self.vy * self.tela.dt
@@ -57,7 +57,7 @@ class Monstro(pygame.sprite.Sprite):
                 self.rect.top = 0
             if self.rect.bottom > HEIGHT:
                 self.rect.bottom = HEIGHT
-                self.count += 1
+            self.count += 1
         else:
             self.muda_vel()
             self.count = 0
@@ -119,12 +119,11 @@ class Monstro(pygame.sprite.Sprite):
     def acerto(self):
         self.hits = pygame.sprite.groupcollide(self.tela.monstros, self.tela.ataques, False, False)
         for hit in self.hits:
-            print(self.tela.player.tipo["dano"])
-            hit.vida -= self.tela.player.tipo["dano"]
-
+                print(self.tela.player.tipo["dano"])
+                hit.vida -= self.tela.player.tipo["dano"]
 
     def update(self):
-        self.move()
+        self.move_aleatorio()
         self.acerto()
         if self.vida <= 0:
             self.kill()
@@ -181,7 +180,8 @@ class Player(pygame.sprite.Sprite):
             now = pygame.time.get_ticks()
             if now - self.last_melee > self.melee_cd:
                 self.last_melee = now
-                Melee(self.tela, (self.x + self.tipo["width"]/2 + self.direcao[0] * TILESIZE, self.y + self.tipo["height"] /2 + self.direcao[1] * TILESIZE))
+                Melee_acao(self.tela, (self.x + self.tipo["width"]/2 + self.direcao[0] * TILESIZE, self.y + self.tipo["height"] /2 + self.direcao[1] * TILESIZE))
+                Melee_imagem(self.tela, (self.x + self.tipo["width"]/2 + self.direcao[0] * TILESIZE, self.y + self.tipo["height"] /2 + self.direcao[1] * TILESIZE))
 
     def colisao_parede(self, dir):
         colisao = pygame.sprite.spritecollide(self,self.tela.paredes,False)
@@ -232,7 +232,6 @@ class Player(pygame.sprite.Sprite):
             self.in_mapu = False
         if colisaod:
             self.in_mapd = False
-
 
     def update(self):
         self.get_keys()
@@ -319,9 +318,25 @@ class Transicao_down(pygame.sprite.Sprite):
         self.rect.x = x * TILESIZE
         self.rect.y = y * TILESIZE
 
-class Melee(pygame.sprite.Sprite):
+class Melee_acao(pygame.sprite.Sprite):
     def __init__(self, tela, pos):
-        self.groups = tela.all_sprites, tela.ataques, tela.visiveis
+        self.groups = tela.all_sprites, tela.ataques
+        pygame.sprite.Sprite.__init__(self, self.groups)
+        self.tela = tela
+        self.image = pygame.Surface((TILESIZE, TILESIZE))
+        self.rect = self.image.get_rect() 
+        self.pos = vec(pos)
+        self.rect.center = pos
+        self.spawn_time = pygame.time.get_ticks()
+
+    def update(self):
+        self.rect.center = self.pos
+        if pygame.time.get_ticks() - self.spawn_time > self.lifetime:
+            self.kill()
+
+class Melee_imagem(pygame.sprite.Sprite):
+    def __init__(self, tela, pos):
+        self.groups = tela.all_sprites, tela.visiveis
         pygame.sprite.Sprite.__init__(self, self.groups)
         self.tela = tela
         self.image = pygame.Surface((TILESIZE, TILESIZE))

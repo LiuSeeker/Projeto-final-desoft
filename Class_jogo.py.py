@@ -34,6 +34,8 @@ class Tela:
 					self.player = Player(self, col, row, jogador)
 				elif tile == "S":
 					Monstro(self, col, row, snake)
+				elif tile == "G":
+					Monstro(self, col, row, ghost)
 				elif tile == "L":
 					Transicao_left(self, col, row)
 				elif tile == "R":
