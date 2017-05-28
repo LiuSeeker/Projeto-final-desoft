@@ -5,6 +5,32 @@ from random import randint
 
 vec = pygame.math.Vector2
 
+class Monstro_seguidor(pygame.sprite.Sprite):
+    def __init__(self, tela, x, y, tipo):
+        self.groups = tela.all_sprites, tela.monstros, tela.visiveis
+        pygame.sprite.Sprite.__init__(self, self.groups)
+        self.tela = tela
+        self.tipo = tipo
+        self.img_dir = path.join(path.dirname(__file__), "sprites\monstro")
+        self.image = pygame.transform.scale(pygame.image.load(path.join(self.img_dir, self.tipo["f"])).convert_alpha(), (self.tipo["width"],self.tipo["height"]))
+        self.rect = self.image.get_rect() 
+        self.pos = vec(x, y) * TILESIZE
+        self.vel = vec(0, 0)
+        self.acc = vec(0, 0)
+        self.rect.center = self.pos
+        self.rot = 0
+        self.vida = self.tipo["vida"]
+
+    def update(self):
+        self.rot = (self.tela.player.pos - self.pos).angle_to(vec(1, 0))
+        self.rect = self.image.get_rect()
+        self.rect.center = self.pos
+        self.acc = vec(self.tipo["vel"], 0).rotate(-self.rot)
+        self.acc += self.vel * -1
+        self.vel += self.acc * self.tela.dt
+        self.pos += self.vel *self.tela.dt + 0.5 * self.acc * self.tela.dt ** 2
+        self.rect.center = self.pos
+
 
 class Monstro(pygame.sprite.Sprite):
     def __init__(self, tela, x, y, tipo):
@@ -138,6 +164,8 @@ class Player(pygame.sprite.Sprite):
         self.img_dir = path.join(path.dirname(__file__), "sprites\soldier")
         self.image = pygame.transform.scale(pygame.image.load(path.join(self.img_dir, self.tipo["f"])).convert_alpha(), (self.tipo["width"],self.tipo["height"]))
         self.rect = self.image.get_rect()
+        self.vel = vec(0, 0)
+        self.pos = vec(x, y) * TILESIZE
         self.rect.center = (x,y)
         self.x = x * TILESIZE
         self.y = y * TILESIZE
@@ -237,6 +265,7 @@ class Player(pygame.sprite.Sprite):
         self.get_keys()
         self.x += self.vx * self.tela.dt
         self.y += self.vy * self.tela.dt
+        self.pos = (self.x, self.y)
         self.rect.x = self.x
         self.colisao_parede('x')
         self.colisao_monstro('x')

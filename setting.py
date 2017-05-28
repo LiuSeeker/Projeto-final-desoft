@@ -28,8 +28,11 @@ snake = {"nome": "snake",
 		"f": "snakef.png",
 		"b": "snakeb.png",
 		"r": "snaker.png",
-		"l": "snakel.png"}
-jogador = {"nome": "player",
+		"l": "snakel.png"
+		}
+
+jogador = {
+		"nome": "player",
 		"vel": 100,
 		"width": 25,
 		"height": TILESIZE,
@@ -39,7 +42,9 @@ jogador = {"nome": "player",
 		"b": "soldierb.png",
 		"r": "soldierr.png",
 		"l": "soldierl.png"}
-ghost = {"nome": "ghost",
+
+ghost = {
+		"nome": "ghost",
 		"vel": 60,
 		"count": 250,
 		"width": TILESIZE,
@@ -49,4 +54,5 @@ ghost = {"nome": "ghost",
 		"f": "ghostf.png",
 		"b": "ghostb.png",
 		"r": "ghostr.png",
-		"l": "ghostl.png"}
+		"l": "ghostl.png"
+		}
