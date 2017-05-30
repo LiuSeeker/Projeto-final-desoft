@@ -5,7 +5,7 @@ from os import path
 from setting import *
 from Sprites import *
 from Mapa import *
-from Monstro_seguidor import *
+'''from Monstro_seguidor import *'''
 
 class Tela:
     def __init__(self, game, mapa):
@@ -65,21 +65,37 @@ class Game:
         self.clock = pygame.time.Clock() # Define o clock
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT)) # Define o tamanho da janela
         pygame.display.set_caption(TITLE) # Define o nome da janela
+        self.intro()
         self.txt = "casa.txt" # Puxa o nome do mapa (.txt)
         self.mapa = mapas[self.txt] # Puxa o dicionário do mapa escolhido
         self.px = 2 # Posição x do player
         self.py = 11 # Posição y do player
-        self.tela = Tela(self, self.txt) # Cria a tela
+    
 
+
+    def intro(self):
+        self.menu = pygame.image.load("maps\\intro\\" + "GAMEINTRO.png")
+        self.screen.blit(self.menu, (0,0))
+        pygame.display.flip()
+        self.events()
 
     def run(self):
         # Loop do jogo 
         self.playing = True
+        estado = "inicio"
         while self.playing:
             self.events()
-            self.tela.visiveis.clear(self.screen, self.tela.back) # Limpa a tela
-            self.update()
-            self.draw()
+            keys = pygame.key.get_pressed()
+            if estado == "inicio":
+                self.intro()
+                if keys[pygame.K_BACKSPACE]:
+                    estado = "jogo"
+                    self.tela = Tela(self, self.txt)
+            else:
+                self.tela.visiveis.clear(self.screen, self.tela.back) # Limpa a tela
+                self.update()
+                self.draw()
+                print(estado)
 
     def quit(self):
         pygame.quit()
