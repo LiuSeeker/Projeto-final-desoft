@@ -1,34 +1,57 @@
-WHITE = (255, 255, 255) 
-BLACK = (0, 0, 0)
-DARKGREY = (40, 40, 40)
-LIGHTGREY = (100, 100, 100)
-BLUE = (0, 0, 255)
-GREEN = (0, 255, 0)
-RED = (255, 0, 0)
-YELLOW = (255, 255, 0)
+YELLOW = (0,0,0)
 
-
-WIDTH = 32*35
-HEIGHT = 32*21
-FPS = 60
-TITLE = "The Legend of Ayres"
-
+# Tamanho do tile
 TILESIZE = 32
 
-mapas = {"matriz_teste.txt": {"imagem": "teste.png", "l": "matriz_mapa_inicial.txt", "r": "matriz_mapa_inicial.txt"},
-		"matriz_mapa_inicial.txt": {"imagem": "mapa_inicial.png", "l": "matriz_teste.txt", "r": "matriz_teste.txt"}}
+# Tamanho da janela
+WIDTH = TILESIZE * 35
+HEIGHT = TILESIZE * 21
 
+# Velocidade do jogo
+FPS = 60
+
+# Título da janela
+TITLE = "The Legend of Ayres"
+
+# Dicionário de dicionários dos mapas
+# 1a chave: nome do arquivo .txt
+# 2a chaves: características do arquivo .txt
+mapas = {"casa.txt": 
+			{"imagem": "casa.png",
+			"p": "fora casa.txt", # Porta
+			"x": 17, # Posição x ao entrar em "casa.txt"
+			"y": 18}, # Posição y ao entrar em "casa.txt"
+		"fora casa.txt":
+			{"imagem": "fora casa.png",
+			"p": "casa.txt",
+			"x": 2,
+			"y": 11,
+			"r": "comeco rio.txt"},
+		"comeco rio.txt":
+			{"imagem": "comeco rio.png",
+			"l": "fora casa.txt", # Mapa da esquerda
+			"r": "ponte.txt"}, # Mapa da direita
+		"ponte.txt":
+			{"imagem": "ponte.png",
+			"l": "comeco rio.txt",
+			"r": "placa cidade.txt"},
+		"placa cidade.txt":
+			{"imagem": "placa cidade",
+			"l": "ponte.txt",
+			"r": "fora castelo.txt"}}
+
+# Tipo
 snake = {"nome": "snake",
-		"vel": 40,
-		"count": 300,
+		"vel": 40, # Velocidade
+		"count": 300, # Contagem para movimento aleatório
 		"width": 15,
 		"height": TILESIZE,
 		"vida": 5,
 		"dano": 1,
-		"f": "snakef.png",
-		"b": "snakeb.png",
-		"r": "snaker.png",
-		"l": "snakel.png"
+		"f": "snakef.png", # Imagem frontal
+		"b": "snakeb.png", # Imagem traseira
+		"r": "snaker.png", # Imagem da direita
+		"l": "snakel.png" # Imagem da esquerda
 		}
 
 jogador = {
@@ -49,7 +72,7 @@ ghost = {
 		"count": 250,
 		"width": TILESIZE,
 		"height": TILESIZE,
-		"vida": 16,
+		"vida": 400,
 		"dano": 2,
 		"f": "ghostf.png",
 		"b": "ghostb.png",
