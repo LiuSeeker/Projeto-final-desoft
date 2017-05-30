@@ -5,6 +5,7 @@ from os import path
 from setting import *
 from Sprites import *
 from Mapa import *
+from Monstro_seguidor import *
 
 class Tela:
     def __init__(self, game, mapa):
