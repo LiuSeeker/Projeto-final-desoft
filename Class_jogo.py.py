@@ -102,7 +102,7 @@ class Game:
 			keys = pygame.key.get_pressed()
 			if estado == "inicio":
 				self.intro()
-				if keys[pygame.K_BACKSPACE]:
+				if keys[pygame.K_SPACE]:
 					estado = "jogo"
 					self.tela = Tela(self, self.txt)
 			else:
