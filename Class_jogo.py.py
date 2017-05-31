@@ -13,7 +13,7 @@ class Tela:
 		self.map = Map(path.join(game_folder, "maps\\grade\\" + mapa)) # Define o objeto do mapa
 		self.game = game
 		self.clock = pygame.time.Clock()
-		self.dt = self.clock.tick(FPS) / 2500 # Diminui a velocidade do jogo
+		self.dt = self.clock.tick(FPS) / 4000 # Diminui a velocidade do jogo
 		self.back = pygame.image.load("maps\\imagens\\" + game.mapa["imagem"]) # Carrega a imagem de fundo
 		self.game.screen.blit(self.back, (0,0)) # Mostra a imagem de fundo
 
@@ -88,29 +88,28 @@ class Game:
 		self.py = 15 # Posição y do player
 
 	def intro(self):
-        self.menu = pygame.image.load("maps\\intro\\" + "GAMEINTRO.png")
-        self.screen.blit(self.menu, (0,0))
-        pygame.display.flip()
-        self.events()
+		self.menu = pygame.image.load("maps\\intro\\" + "GAMEINTRO.png")
+		self.screen.blit(self.menu, (0,0))
+		pygame.display.flip()
+		self.events()
 
 	def run(self):
 		# Loop do jogo 
 		self.playing = True
 		estado = "inicio"
 		while self.playing:
-            self.events()
-            keys = pygame.key.get_pressed()
-            if estado == "inicio":
-                self.intro()
-                if keys[pygame.K_BACKSPACE]:
-                    estado = "jogo"
-                    self.tela = Tela(self, self.txt)
-            else:
-                self.tela.visiveis.clear(self.screen, self.tela.back) # Limpa a tela
-                self.update()
-                self.draw()
-                print(estado)
-    
+			self.events()
+			keys = pygame.key.get_pressed()
+			if estado == "inicio":
+				self.intro()
+				if keys[pygame.K_BACKSPACE]:
+					estado = "jogo"
+					self.tela = Tela(self, self.txt)
+			else:
+				self.tela.visiveis.clear(self.screen, self.tela.back) # Limpa a tela
+				self.update()
+				self.draw()
+	
 	def quit(self):
 		pygame.quit()
 		sys.exit()

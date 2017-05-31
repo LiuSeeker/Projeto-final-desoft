@@ -1,5 +1,3 @@
-YELLOW = (0,0,0)
-
 # Tamanho do tile
 TILESIZE = 32
 
