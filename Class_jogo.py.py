@@ -13,7 +13,7 @@ class Tela:
 		self.map = Map(path.join(game_folder, "maps\\grade\\" + mapa)) # Define o objeto do mapa
 		self.game = game
 		self.clock = pygame.time.Clock()
-		self.dt = self.clock.tick(FPS) / 4000 # Diminui a velocidade do jogo
+		self.dt = self.clock.tick(FPS) / 3500 # Diminui a velocidade do jogo
 		self.back = pygame.image.load("maps\\imagens\\" + game.mapa["imagem"]) # Carrega a imagem de fundo
 		self.game.screen.blit(self.back, (0,0)) # Mostra a imagem de fundo
 
@@ -144,7 +144,7 @@ class Game:
 			# Transição para tela da direita
 			self.txt = self.mapa["r"]
 			self.mapa = mapas[self.txt]
-			self.px = 2
+			self.px = 1
 			self.py = self.tela.player.y / TILESIZE
 			self.tela = Tela(self, self.txt)
 		if self.tela.player.in_mapl == False:

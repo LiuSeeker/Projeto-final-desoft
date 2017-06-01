@@ -34,7 +34,7 @@ mapas = {"casa.txt":
 			"l": "comeco rio.txt",
 			"r": "placa cidade.txt"},
 		"placa cidade.txt":
-			{"imagem": "placa cidade",
+			{"imagem": "placa cidade.png",
 			"l": "ponte.txt",
 			"u": "fora castelo.txt"},
 		"fora castelo.txt":
@@ -59,7 +59,8 @@ jogador = {
 		"l": "soldierl.png"
 		}
 
-snake = {"nome": "snake",
+snake = {
+		"nome": "snake",
 		"vel": 40, # Velocidade
 		"count": 300, # Contagem para movimento aleatório
 		"width": 20,
