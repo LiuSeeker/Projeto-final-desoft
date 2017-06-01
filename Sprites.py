@@ -163,6 +163,18 @@ class Monstro(pygame.sprite.Sprite):
 	def update(self):
 		# Atualiza a sprite 
 		self.move_aleatorio()
+		if self.rect.right > WIDTH:
+			self.rect.right = WIDTH
+			self.x -= self.vx * self.tela.dt
+		if self.rect.left < 0:
+			self.rect.left = 0
+			self.x -= self.vx * self.tela.dt
+		if self.rect.top < 0:
+			self.rect.top = 0
+			self.y -= self.vy * self.tela.dt
+		if self.rect.bottom > HEIGHT:
+			self.rect.bottom = HEIGHT
+			self.y -= self.vy * self.tela.dt
 		self.acerto()
 		self.ataque()
 		if self.vida <= 0:
@@ -186,6 +198,7 @@ class Player(pygame.sprite.Sprite):
 		self.rect.center = (x,y)
 		self.x = x * TILESIZE # Define a posição x
 		self.y = y * TILESIZE # Define a posição y
+		self.vida = self.tipo["vida"]
 		self.direcao = 0
 		self.last_melee = 0
 		self.melee_cd = 600 # Cooldown do ataque melee
@@ -325,6 +338,8 @@ class Player(pygame.sprite.Sprite):
 		if self.rect.bottom > HEIGHT:
 			self.rect.bottom = HEIGHT
 			self.y -= self.vy * self.tela.dt
+		if self.vida <= 0:
+			self.kill()
 
 
 class Parede(pygame.sprite.Sprite):
@@ -463,7 +478,7 @@ class Ranged(pygame.sprite.Sprite):
 		self.image = pygame.transform.scale(pygame.image.load(path.join(self.img_dir,
 											self.tipo["au"])).convert_alpha(),
 											(self.tipo["awidth"], self.tipo["aheight"]))
-		self.rect = self.image.get_rect() 
+		self.rect = self.image.get_rect()
 		self.x = x
 		self.y = y
 		self.dirx = dirx
@@ -472,6 +487,22 @@ class Ranged(pygame.sprite.Sprite):
 		self.rect.y = self.y
 		self.spawn_time = pygame.time.get_ticks()
 		self.lifetime = self.tipo["ataquedur"]
+
+	def colisao_parede(self):
+		# Função para colisão entre o Player e Paredes
+		colisao = pygame.sprite.spritecollide(self,self.tela.paredes,False)
+		if colisao:
+			self.kill()
+
+	def colisao_player(self):
+		# Função para colisão entre o Player e Paredes
+		self.hits = pygame.sprite.spritecollide(self, self.tela.players,\
+												False)
+		for hit in self.hits:
+			Dano(self.tela, self.tela.player.x + self.tipo["width"]/2, self.tela.player.y - self.tipo["height"]/2, \
+				str(self.tipo["nome"]))
+			self.tela.player.vida -= self.tipo["dano"]
+			self.kill()
 
 	def update(self):
 		self.x += self.tipo["ataquevel"] * self.tela.dt * self.dirx
@@ -494,7 +525,8 @@ class Ranged(pygame.sprite.Sprite):
 											(self.tipo["aheight"], self.tipo["awidth"]))
 		self.rect.x = self.x
 		self.rect.y = self.y
-		pygame.sprite.spritecollide(self,self.tela.all_sprites,False)
+		self.colisao_parede()
+		self.colisao_player()
 		if pygame.time.get_ticks() - self.spawn_time > self.lifetime:
 			self.kill()
 
@@ -518,4 +550,3 @@ class Dano(pygame.sprite.Sprite):
 		self.rect.center = (self.x, self.y)
 		if pygame.time.get_ticks() - self.spawn_time > self.lifetime:
 			self.kill()
-
