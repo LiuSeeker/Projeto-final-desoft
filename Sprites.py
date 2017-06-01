@@ -138,7 +138,6 @@ class Monstro(pygame.sprite.Sprite):
 		self.hits = pygame.sprite.spritecollide(self, self.tela.ataques,\
 												False)
 		for hit in self.hits:
-			print(hit)
 			Dano(self.tela, self.x + self.tipo["width"]/2, self.y - self.tipo["height"]/2, \
 				"player")
 			self.vida -= self.tela.player.tipo["dano"]
@@ -397,7 +396,6 @@ class Melee_acao(pygame.sprite.Sprite):
 	def update(self):
 		self.rect.center = self.pos
 		if pygame.time.get_ticks() - self.spawn_time > self.lifetime:
-			print("kill")
 			self.kill()
 
 class Melee_imagem(pygame.sprite.Sprite):
