@@ -29,7 +29,6 @@ class Tela:
 		self.transu = pygame.sprite.Group()
 		self.transd = pygame.sprite.Group()
 		self.transp = pygame.sprite.Group()
-
 		self.LS = []
 		self.LG = []
 		self.LW = []
