@@ -47,8 +47,8 @@ snake = {"nome": "snake",
 		"count": 300, # Contagem para movimento aleatório
 		"width": 15,
 		"height": TILESIZE,
-		"vida": 5,
-		"dano": 1,
+		"vida": 10,
+		"dano": 2,
 		"f": "snakef.png", # Imagem frontal
 		"b": "snakeb.png", # Imagem traseira
 		"r": "snaker.png", # Imagem da direita
@@ -60,8 +60,8 @@ jogador = {
 		"vel": 100,
 		"width": 25,
 		"height": TILESIZE,
-		"vida": 25,
-		"dano": 2,
+		"vida": 100,
+		"dano": 5,
 		"ataqueu": "ataqueu.png",
 		"ataqued": "ataqued.png",
 		"ataquel": "ataquel.png",
@@ -77,8 +77,22 @@ ghost = {
 		"count": 250,
 		"width": TILESIZE,
 		"height": TILESIZE,
-		"vida": 400,
-		"dano": 2,
+		"vida": 20,
+		"dano": 4,
+		"f": "ghostf.png",
+		"b": "ghostb.png",
+		"r": "ghostr.png",
+		"l": "ghostl.png"
+		}
+
+bat = {
+		"nome": "bat",
+		"vel": 40,
+		"count": 250,
+		"width": TILESIZE,
+		"height": TILESIZE,
+		"vida": 5,
+		"dano": 1,
 		"f": "ghostf.png",
 		"b": "ghostb.png",
 		"r": "ghostr.png",
@@ -86,7 +100,8 @@ ghost = {
 		}
 
 dano = {
-		"player": "2.png",
-		"snake": "1.png",
-		"ghost": "2.png"
+		"player": str(jogador["dano"]) + ".png",
+		"snake": "2.png",
+		"ghost": "4.png",
+		"bat": "1.png"
 		}

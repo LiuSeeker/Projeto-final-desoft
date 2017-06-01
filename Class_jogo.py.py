@@ -33,6 +33,7 @@ class Tela:
 		self.LS = []
 		self.LG = []
 		self.LW = []
+		self.LB = []
 
 		# Cria os obajetos a partir do .txt
 		for row, tiles in enumerate(self.map.data): # "row" retorna a posição na lista, "tiles" retorna a string
@@ -46,6 +47,9 @@ class Tela:
 				elif tile == "W":
 					self.LW.append(col)
 					self.LW.append(row)
+				elif tile == "B":
+					self.LB.append(col)
+					self.LB.append(row)
 
 				if tile == "1":
 					Parede(self, col, row)
@@ -66,6 +70,9 @@ class Tela:
 			self.LG[i] = Monstro(self, self.LG[i*2], self.LG[i*2+1], ghost)
 		for i in range(int(len(self.LW)/2)):
 			self.LW[i] = Monstro(self, self.LW[i*2], self.LW[i*2+1], snake)
+		for i in range(int(len(self.LB)/2)):
+			self.LB[i] = Monstro(self, self.LB[i*2], self.LB[i*2+1], bat)
+
 
 		self.player = Player(self, self.game.px, self.game.py, jogador)
 
@@ -79,7 +86,6 @@ class Game:
 		pygame.init() # Inicia o pygame
 		self.clock = pygame.time.Clock() # Define o clock
 		self.screen = pygame.display.set_mode((WIDTH, HEIGHT)) # Define o tamanho da janela
-		print(TITLE)
 		self.intro()
 		pygame.display.set_caption(TITLE) # Define o nome da janela
 		self.txt = "casa.txt" # Puxa o nome do mapa (.txt)
@@ -102,7 +108,7 @@ class Game:
 			keys = pygame.key.get_pressed()
 			if estado == "inicio":
 				self.intro()
-				if keys[pygame.K_SPACE]:
+				if keys[pygame.K_BACKSPACE]:
 					estado = "jogo"
 					self.tela = Tela(self, self.txt)
 			else:
