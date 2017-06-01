@@ -42,19 +42,6 @@ mapas = {"casa.txt":
 			"d": "placa cidade"}}
 
 # Tipo
-snake = {"nome": "snake",
-		"vel": 40, # Velocidade
-		"count": 300, # Contagem para movimento aleatório
-		"width": 15,
-		"height": TILESIZE,
-		"vida": 10,
-		"dano": 2,
-		"f": "snakef.png", # Imagem frontal
-		"b": "snakeb.png", # Imagem traseira
-		"r": "snaker.png", # Imagem da direita
-		"l": "snakel.png" # Imagem da esquerda
-		}
-
 jogador = {
 		"nome": "player",
 		"vel": 100,
@@ -69,7 +56,30 @@ jogador = {
 		"f": "soldierf.png",
 		"b": "soldierb.png",
 		"r": "soldierr.png",
-		"l": "soldierl.png"}
+		"l": "soldierl.png"
+		}
+
+snake = {"nome": "snake",
+		"vel": 40, # Velocidade
+		"count": 300, # Contagem para movimento aleatório
+		"width": 20,
+		"height": 30,
+		"vida": 10,
+		"dano": 2,
+		"cd": 1400,
+		"ataquedur": 1400,
+		"ataquevel": 50,
+		"f": "snakef.png", # Imagem frontal
+		"b": "snakeb.png", # Imagem traseira
+		"r": "snaker.png", # Imagem da direita
+		"l": "snakel.png", # Imagem da esquerda
+		"au": "snakeau.png",
+		"ad": "snakead.png",
+		"al": "snakeal.png",
+		"ar": "snakear.png",
+		"awidth": 10,
+		"aheight": 20
+		}
 
 ghost = {
 		"nome": "ghost",
@@ -79,10 +89,19 @@ ghost = {
 		"height": TILESIZE,
 		"vida": 20,
 		"dano": 4,
+		"cd": 1600,
+		"ataquedur": 1600,
+		"ataquevel": 80,
 		"f": "ghostf.png",
 		"b": "ghostb.png",
 		"r": "ghostr.png",
-		"l": "ghostl.png"
+		"l": "ghostl.png",
+		"au": "ghostau.png",
+		"ad": "ghostad.png",
+		"al": "ghostal.png",
+		"ar": "ghostar.png",
+		"awidth": 15,
+		"aheight": 15
 		}
 
 bat = {
@@ -90,13 +109,22 @@ bat = {
 		"vel": 40,
 		"count": 250,
 		"width": TILESIZE,
-		"height": TILESIZE,
+		"height": 25,
 		"vida": 5,
 		"dano": 1,
-		"f": "ghostf.png",
-		"b": "ghostb.png",
-		"r": "ghostr.png",
-		"l": "ghostl.png"
+		"cd": 1500,
+		"ataquedur": 1200,
+		"ataquevel": 40,
+		"f": "batf.png",
+		"b": "batb.png",
+		"r": "batr.png",
+		"l": "batl.png",
+		"au": "bata.png",
+		"ad": "bata.png",
+		"al": "bata.png",
+		"ar": "bata.png",
+		"awidth": 10,
+		"aheight": 10
 		}
 
 dano = {

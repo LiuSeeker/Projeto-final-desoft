@@ -23,7 +23,8 @@ class Tela:
 		self.visiveis = pygame.sprite.Group()
 		self.monstros = pygame.sprite.Group()
 		self.players = pygame.sprite.Group()
-		self.ataques = pygame.sprite.Group()
+		self.ataques_player = pygame.sprite.Group()
+		self.ataques_monstros = pygame.sprite.Group()
 		self.transr = pygame.sprite.Group()
 		self.transl = pygame.sprite.Group()
 		self.transu = pygame.sprite.Group()
@@ -68,7 +69,7 @@ class Tela:
 		for i in range(int(len(self.LG)/2)):
 			self.LG[i] = Monstro(self, self.LG[i*2], self.LG[i*2+1], ghost)
 		for i in range(int(len(self.LW)/2)):
-			self.LW[i] = Monstro(self, self.LW[i*2], self.LW[i*2+1], snake)
+			self.LW[i] = Monstro_seguidor(self, self.LW[i*2], self.LW[i*2+1], snake)
 		for i in range(int(len(self.LB)/2)):
 			self.LB[i] = Monstro(self, self.LB[i*2], self.LB[i*2+1], bat)
 
@@ -122,7 +123,8 @@ class Game:
 	def update(self):
 		# Atualiza as sprites
 		self.tela.visiveis.update()
-		self.tela.ataques.update()
+		self.tela.ataques_player.update()
+		self.tela.ataques_monstros.update()
 		self.trans_tela()
 
 	def draw(self):
