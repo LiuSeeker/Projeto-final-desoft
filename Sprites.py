@@ -135,12 +135,13 @@ class Monstro(pygame.sprite.Sprite):
 
     def acerto(self):
         # Marca um acerto no Monstro quando ele colide com um ataque
-        self.hits = pygame.sprite.groupcollide(self.tela.monstros, self.tela.ataques,\
-                                                False, False)
+        self.hits = pygame.sprite.spritecollide(self, self.tela.ataques,\
+                                                False)
         for hit in self.hits:
-            print(self.tela.player.tipo["dano"])
-            hit.vida -= self.tela.player.tipo["dano"]
-            break
+            Dano(self.tela, self.x + self.tipo["width"]/2, self.y - self.tipo["height"]/2, \
+                "player")
+            self.vida -= self.tela.player.tipo["dano"]
+            break	
 
     def update(self):
         # Atualiza a sprite 
@@ -218,8 +219,8 @@ class Player(pygame.sprite.Sprite):
             now = pygame.time.get_ticks()
             if now - self.last_melee > self.melee_cd:
                 self.last_melee = now
-                Melee_acao(self.tela, (self.x + self.tipo["width"] / 2 +
-                            self.direcao[0] * TILESIZE, self.y + self.tipo["height"] / 2 +
+                Melee_acao(self.tela, (self.x + self.tipo["width"] / 2 + 
+                			self.direcao[0] * TILESIZE, self.y + self.tipo["height"] / 2 +
                             self.direcao[1] * TILESIZE))
                 Melee_imagem(self.tela, (self.x + self.tipo["width"] / 2 +
                             self.direcao[0] * TILESIZE, self.y + self.tipo["height"] / 2 +
@@ -402,15 +403,55 @@ class Melee_imagem(pygame.sprite.Sprite):
         self.groups = tela.all_sprites, tela.visiveis
         pygame.sprite.Sprite.__init__(self, self.groups)
         self.tela = tela
-        self.image = pygame.Surface((TILESIZE, TILESIZE))
-        self.image.fill(YELLOW)
+        self.img_dir = path.join(path.dirname(__file__), "sprites\soldier")
+        self.image = pygame.transform.scale(pygame.image.load(path.join(self.img_dir,
+                                            self.tela.player.tipo["ataqued"])).convert_alpha(),
+                                            (TILESIZE, TILESIZE))
         self.rect = self.image.get_rect() 
         self.pos = vec(pos)
         self.rect.center = pos
         self.spawn_time = pygame.time.get_ticks()
-        self.lifetime = 20
+        self.ang = 0
+        self.lifetime = 80
 
     def update(self):
+        if self.tela.player.direcao == (1,0):
+            self.image = pygame.transform.scale(pygame.image.load(path.join(self.img_dir,
+                                            self.tela.player.tipo["ataquer"])).convert_alpha(),
+                                            (TILESIZE, TILESIZE))
+        if self.tela.player.direcao == (-1,0):
+            self.image = pygame.transform.scale(pygame.image.load(path.join(self.img_dir,
+                                            self.tela.player.tipo["ataquel"])).convert_alpha(),
+                                            (TILESIZE, TILESIZE))
+        if self.tela.player.direcao == (0,1):
+            self.image = pygame.transform.scale(pygame.image.load(path.join(self.img_dir,
+                                            self.tela.player.tipo["ataqued"])).convert_alpha(),
+                                            (TILESIZE, TILESIZE))
+        if self.tela.player.direcao == (0,-1):
+            self.image = pygame.transform.scale(pygame.image.load(path.join(self.img_dir,
+                                            self.tela.player.tipo["ataqueu"])).convert_alpha(),
+                                            (TILESIZE, TILESIZE))
         self.rect.center = self.pos
         if pygame.time.get_ticks() - self.spawn_time > self.lifetime:
             self.kill()
+
+class Dano(pygame.sprite.Sprite):
+    def __init__(self, tela, x, y, tipo):
+        self.groups = tela.all_sprites, tela.visiveis
+        pygame.sprite.Sprite.__init__(self, self.groups)
+        self.tela = tela
+        self.img_dir = path.join(path.dirname(__file__), "sprites\dano")
+        self.image = pygame.transform.scale(pygame.image.load(path.join(self.img_dir,
+                                            dano[tipo])).convert_alpha(),
+                                            (TILESIZE-10, TILESIZE-10))
+        self.rect = self.image.get_rect() 
+        self.x = x
+        self.y = y
+        self.spawn_time = pygame.time.get_ticks()
+        self.lifetime = 500
+
+    def update(self):
+        self.rect.center = (self.x, self.y)
+        if pygame.time.get_ticks() - self.spawn_time > self.lifetime:
+            self.kill()
+

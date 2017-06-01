@@ -1,5 +1,3 @@
-YELLOW = (0,0,0)
-
 # Tamanho do tile
 TILESIZE = 32
 
@@ -38,7 +36,10 @@ mapas = {"casa.txt":
 		"placa cidade.txt":
 			{"imagem": "placa cidade",
 			"l": "ponte.txt",
-			"r": "fora castelo.txt"}}
+			"u": "fora castelo.txt"},
+		"fora castelo.txt":
+			{"imagem": "fora castelo.png",
+			"d": "placa cidade"}}
 
 # Tipo
 snake = {"nome": "snake",
@@ -61,6 +62,10 @@ jogador = {
 		"height": TILESIZE,
 		"vida": 25,
 		"dano": 2,
+		"ataqueu": "ataqueu.png",
+		"ataqued": "ataqued.png",
+		"ataquel": "ataquel.png",
+		"ataquer": "ataquer.png",
 		"f": "soldierf.png",
 		"b": "soldierb.png",
 		"r": "soldierr.png",
@@ -78,4 +83,10 @@ ghost = {
 		"b": "ghostb.png",
 		"r": "ghostr.png",
 		"l": "ghostl.png"
+		}
+
+dano = {
+		"player": "2.png",
+		"snake": "1.png",
+		"ghost": "2.png"
 		}
