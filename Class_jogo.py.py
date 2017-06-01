@@ -50,12 +50,12 @@ class Tela:
                 elif tile == "D":
                     Transicao_down(self, col, row)
                 elif tile == "P":
-                	Transicao_porta(self, col, row)
+                    Transicao_porta(self, col, row)
 
         self.player = Player(self, self.game.px, self.game.py, jogador)
 
     def draw(self):
-    	# Desenha as sprites visíveis (que devem aparecer)
+        # Desenha as sprites visíveis (que devem aparecer)
         self.visiveis.draw(game.screen)
 
 
@@ -91,7 +91,7 @@ class Game:
         self.trans_tela()
 
     def draw(self):
-    	# Desenha as sprites
+        # Desenha as sprites
         pygame.display.set_caption("{:.2f}".format(self.clock.get_fps()))
         self.tela.draw()
         pygame.display.flip()
@@ -103,37 +103,37 @@ class Game:
                 self.quit()
         
     def trans_tela(self):
-    	# Transição de tela
+        # Transição de tela
         if self.tela.player.in_mapr == False:
-        	# Transição para tela da direita
+            # Transição para tela da direita
             self.txt = self.mapa["r"]
             self.mapa = mapas[self.txt]
             self.px = 2
             self.py = self.tela.player.y / TILESIZE
             self.tela = Tela(self, self.txt)
         if self.tela.player.in_mapl == False:
-        	# Transição para tela da esquerda
+            # Transição para tela da esquerda
             self.txt = self.mapa["l"]
             self.mapa = mapas[self.txt]
             self.px = 33
             self.py = self.tela.player.y / TILESIZE
             self.tela = Tela(self, self.txt)
         if self.tela.player.in_mapu == False:
-        	# Transição para tela de cima
+            # Transição para tela de cima
             self.txt = self.mapa["u"]
             self.mapa = mapas[self.txt]
             self.px = self.tela.player.x / TILESIZE
             self.py = 19
             self.tela = Tela(self, self.txt)
         if self.tela.player.in_mapd == False:
-        	# Transição para tela de baixo
+            # Transição para tela de baixo
             self.txt = self.mapa["d"]
             self.mapa = mapas[self.txt]
             self.px = self.tela.player.x / TILESIZE
             self.py = 1
             self.tela = Tela(self, self.txt)
         if self.tela.player.in_mapp == False:
-        	# Transição para porta
+            # Transição para porta
             self.txt = self.mapa["p"]
             self.mapa = mapas[self.txt]
             self.px = self.mapa["x"]
