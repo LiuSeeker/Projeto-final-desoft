@@ -34,7 +34,7 @@ mapas = {"casa.txt":
 			"l": "comeco rio.txt",
 			"r": "placa cidade.txt"},
 		"placa cidade.txt":
-			{"imagem": "placa cidade",
+			{"imagem": "placa cidade.png",
 			"l": "ponte.txt",
 			"u": "fora castelo.txt"},
 		"fora castelo.txt":
@@ -59,13 +59,14 @@ jogador = {
 		"l": "soldierl.png"
 		}
 
-snake = {"nome": "snake",
+snake = {
+		"nome": "snake",
 		"vel": 40, # Velocidade
 		"count": 300, # Contagem para movimento aleatório
 		"width": 20,
 		"height": 30,
 		"vida": 10,
-		"dano": 2,
+		"dano": 5,
 		"cd": 1400,
 		"ataquedur": 1400,
 		"ataquevel": 50,
@@ -88,7 +89,7 @@ ghost = {
 		"width": TILESIZE,
 		"height": TILESIZE,
 		"vida": 20,
-		"dano": 4,
+		"dano": 7,
 		"cd": 1600,
 		"ataquedur": 1600,
 		"ataquevel": 80,
