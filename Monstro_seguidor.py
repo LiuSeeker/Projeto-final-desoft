@@ -2,6 +2,7 @@ import pygame
 from os import path
 from setting import *
 from random import randint
+from Sprites import *
 
 vec = pygame.math.Vector2
 
@@ -19,7 +20,7 @@ def colisao(sprite, group, dir):
 		colisao = pygame.sprite.spritecollide(sprite, group, False)
 		if colisao:
 			if sprite.vel.y > 0:
-				sprite.spritepos.y = colisao[0].rect.top - sprite.rect.height / 2
+				sprite.pos.y = colisao[0].rect.top - sprite.rect.height / 2
 			if sprite.vel.y < 0:
 				sprite.pos.y = colisao[0].rect.bottom + sprite.rect.height / 2
 			sprite.vel.y = 0
@@ -40,9 +41,11 @@ class Monstro_seguidor(pygame.sprite.Sprite):
 		self.pos = vec(x, y) * TILESIZE
 		self.vel = vec(0, 0)
 		self.acc = vec(0, 0)
-		self.rect.center = self.pos 
+		self.rect.center = self.pos
 		self.rot = 0
 		self.vida = self.tipo["vida"]
+		self.x = y
+		self.y = x
 
 	def update(self):
 		self.rot = (self.tela.player.pos - self.pos).angle_to(vec(1, 0))
@@ -54,6 +57,22 @@ class Monstro_seguidor(pygame.sprite.Sprite):
 		self.pos += self.vel *self.tela.dt + 0.5 * self.acc * self.tela.dt ** 2
 		self.rect.centerx = self.pos.x
 		colisao(self, self.tela.paredes, 'x')
+		colisao(self, self.tela.players, 'x')
 		self.rect.centery = self.pos.y
-		colisao(self, self.tela.paredes, 'x')
+		colisao(self, self.tela.paredes, 'y')
+		colisao(self, self.tela.players, 'y')
 		self.rect.center = self.pos
+		self.x = self.pos[0]
+		self.y = self.pos[1]
+		self.acerto()
+		if self.vida <= 0:
+			self.kill()
+
+	def acerto(self):
+		# Marca um acerto no Monstro quando ele colide com um ataque
+		self.hits = pygame.sprite.spritecollide(self, self.tela.ataques_player,\
+												False)
+		for hit in self.hits:
+			Dano(self.tela, self.x + self.tipo["width"]/2, self.y - self.tipo["height"]/2, \
+				"player")
+			self.vida -= self.tela.player.tipo["dano"]
