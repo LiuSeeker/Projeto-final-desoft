@@ -25,6 +25,7 @@ class Monstro(pygame.sprite.Sprite):
 		self.diry = 0
 		self.count = 0
 		self.vida = self.tipo["vida"]
+		self.vel = self.tipo["vel"]
 		self.last_ranged = 0
 		self.ataque_cd = self.tipo["cd"]
 
@@ -34,9 +35,9 @@ class Monstro(pygame.sprite.Sprite):
 		self.vy = 0
 		self.dir = randint(0,1)
 		if self.dir == 1:
-			self.vx = randint(-self.tipo["vel"], self.tipo["vel"])
+			self.vx = randint(-self.vel, self.vel)
 		else:
-			self.vy = randint(-self.tipo["vel"], self.tipo["vel"])
+			self.vy = randint(-self.vel, self.vel)
 
 		# Carrega as imagens dependendo da direção
 		if self.vx > 0:
@@ -340,6 +341,7 @@ class Player(pygame.sprite.Sprite):
 			self.y -= self.vy * self.tela.dt
 		if self.vida <= 0:
 			self.kill()
+		print(self.x, self.y)
 
 
 class Parede(pygame.sprite.Sprite):
@@ -515,21 +517,20 @@ class Ranged(pygame.sprite.Sprite):
 											self.tipo["al"])).convert_alpha(),
 											(self.tipo["aheight"], self.tipo["awidth"]))
 		self.y += self.tipo["ataquevel"] * self.tela.dt * self.diry
-		if self.y == 1:
+		if self.diry == 1:
 			self.image = pygame.transform.scale(pygame.image.load(path.join(self.img_dir,
 											self.tipo["ad"])).convert_alpha(),
-											(self.tipo["aheight"], self.tipo["awidth"]))
-		if self.y == -1:
+											(self.tipo["awidth"], self.tipo["aheight"]))
+		if self.diry == -1:
 			self.image = pygame.transform.scale(pygame.image.load(path.join(self.img_dir,
 											self.tipo["au"])).convert_alpha(),
-											(self.tipo["aheight"], self.tipo["awidth"]))
+											(self.tipo["awidth"], self.tipo["aheight"]))
 		self.rect.x = self.x
 		self.rect.y = self.y
 		self.colisao_parede()
 		self.colisao_player()
 		if pygame.time.get_ticks() - self.spawn_time > self.lifetime:
 			self.kill()
-
 
 class Dano(pygame.sprite.Sprite):
 	def __init__(self, tela, x, y, tipo):
@@ -539,6 +540,26 @@ class Dano(pygame.sprite.Sprite):
 		self.img_dir = path.join(path.dirname(__file__), "sprites\dano")
 		self.image = pygame.transform.scale(pygame.image.load(path.join(self.img_dir,
 											dano[tipo])).convert_alpha(),
+											(TILESIZE-10, TILESIZE-10))
+		self.rect = self.image.get_rect() 
+		self.x = x
+		self.y = y
+		self.spawn_time = pygame.time.get_ticks()
+		self.lifetime = 500
+
+	def update(self):
+		self.rect.center = (self.x, self.y)
+		if pygame.time.get_ticks() - self.spawn_time > self.lifetime:
+			self.kill()
+
+class Exp(pygame.sprite.Sprite):
+	def __init__(self, tela, x, y, tipo):
+		self.groups = tela.all_sprites, tela.visiveis
+		pygame.sprite.Sprite.__init__(self, self.groups)
+		self.tela = tela
+		self.img_dir = path.join(path.dirname(__file__), "sprites\exp")
+		self.image = pygame.transform.scale(pygame.image.load(path.join(self.img_dir,
+											exp[tipo])).convert_alpha(),
 											(TILESIZE-10, TILESIZE-10))
 		self.rect = self.image.get_rect() 
 		self.x = x

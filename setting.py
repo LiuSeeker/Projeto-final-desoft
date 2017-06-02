@@ -36,19 +36,47 @@ mapas = {"casa.txt":
 		"placa cidade.txt":
 			{"imagem": "placa cidade.png",
 			"l": "ponte.txt",
-			"u": "fora castelo.txt"},
+			"u": "fora castelo.txt",
+			"r": "floresta.txt"},
 		"fora castelo.txt":
 			{"imagem": "fora castelo.png",
-			"d": "placa cidade"}}
+			"u": "castelo.txt",
+			"d": "placa cidade.txt",
+			"x": 17,
+			"y": 5},
+		"castelo.txt":
+			{"imagem": "castelo.png",
+			"p": "fora castelo.txt"},
+		"floresta.txt":
+			{"imagem": "floresta.png",
+			"l": "placa cidade.txt",
+			"r": "caverna.txt"},
+		"caverna.txt":
+			{"imagem": "caverna.png",
+			"l": "floresta.txt",
+			"u": "ponte lava.txt",
+			"x": 31,
+			"y": 7},
+		"ponte lava.txt":
+			{"imagem": "ponte lava.png",
+			"p": "caverna.txt",
+			"u": "final.txt",
+			"x": 17,
+			"y": 3},
+		"final.txt":
+			{"imagem": "final.png",
+			"p": "ponte lava.txt"}
+		}
 
 # Tipo
 jogador = {
 		"nome": "player",
-		"vel": 100,
+		"vel": 300,
 		"width": 25,
 		"height": TILESIZE,
 		"vida": 100,
 		"dano": 5,
+		"exp": 0,
 		"ataqueu": "ataqueu.png",
 		"ataqued": "ataqued.png",
 		"ataquel": "ataquel.png",
@@ -134,3 +162,9 @@ dano = {
 		"ghost": "4.png",
 		"bat": "1.png"
 		}
+
+exp = {
+		"snake": "5.png",
+		"ghost": "10.png",
+		"bat": "2.png"
+}
