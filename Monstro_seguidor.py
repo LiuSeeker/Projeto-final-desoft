@@ -74,6 +74,8 @@ class Monstro_seguidor(pygame.sprite.Sprite):
         self.ataque()
         if self.vida <= 0:
             self.kill()
+            Exp(self.tela, self.tela.player.x + jogador["width"]/2, self.tela.player.y - jogador["height"]/2, self.tipo["nome"])
+            self.tela.player.exp += self.tipo["exp"]
 
     def acerto(self):
         # Marca um acerto no Monstro quando ele colide com um ataque
@@ -83,7 +85,6 @@ class Monstro_seguidor(pygame.sprite.Sprite):
             Dano(self.tela, self.x + self.tipo["width"]/2, self.y - self.tipo["height"]/2, \
                 "player")
             self.vida -= self.tela.player.tipo["dano"]
-   
 
 
     def ataque(self):
@@ -95,3 +96,4 @@ class Monstro_seguidor(pygame.sprite.Sprite):
                 Dano(self.tela, self.tela.player.x + self.tipo["width"]/2, self.tela.player.y - self.tipo["height"]/2, \
 				str(self.tipo["nome"]))
                 self.tela.player.vida -= self.tipo["dano"]
+                Vida(self.tela, 16, 1, self.tela.player.vida)

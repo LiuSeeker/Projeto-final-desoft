@@ -161,8 +161,28 @@ class Monstro(pygame.sprite.Sprite):
 				"player")
 			self.vida -= self.tela.player.tipo["dano"]
 
+	def ataque_boss(self):
+		now = pygame.time.get_ticks()
+		if now - self.last_ranged > self.ataque_cd:
+			self.last_ranged = now
+			Ranged(self.tela, self.x, self.y, 1, 0, self.tipo)
+			Ranged(self.tela, self.x, self.y, -1, 0, self.tipo)
+			Ranged(self.tela, self.x, self.y, 0, 1, self.tipo)
+			Ranged(self.tela, self.x, self.y, 0, -1, self.tipo)
+
+	def ataque_boss2(self):
+		#Ataque acontece se o monstro colidir com o jogador
+		if self.colide_com_playery or self.colide_com_playerx:
+			now = pygame.time.get_ticks()
+			if now - self.last_melee > self.melee_cd:
+				self.last_melee = now
+				Dano(self.tela, self.tela.player.x + self.tipo["width"]/2, self.tela.player.y - self.tipo["height"]/2, \
+				str(self.tipo["nome"]))
+				self.tela.player.vida -= self.tipo["dano"] - 5
+				Vida(self.tela, 16, 1, self.tela.player.vida)
+
 	def update(self):
-		# Atualiza a sprite 
+		# Atualiza a sprite
 		self.move_aleatorio()
 		if self.rect.right > WIDTH:
 			self.rect.right = WIDTH
@@ -177,9 +197,15 @@ class Monstro(pygame.sprite.Sprite):
 			self.rect.bottom = HEIGHT
 			self.y -= self.vy * self.tela.dt
 		self.acerto()
-		self.ataque()
+		if self.tipo == boss:
+			self.ataque_boss()
+			self.ataque_boss2()
+		else:
+			self.ataque()
 		if self.vida <= 0:
 			self.kill()
+			Exp(self.tela, self.tela.player.x + jogador["width"]/2, self.tela.player.y - jogador["height"]/2, self.tipo["nome"])
+			self.tela.player.exp += self.tipo["exp"]
 	
 
 class Player(pygame.sprite.Sprite):
@@ -200,6 +226,7 @@ class Player(pygame.sprite.Sprite):
 		self.x = x * TILESIZE # Define a posição x
 		self.y = y * TILESIZE # Define a posição y
 		self.vida = self.tipo["vida"]
+		self.exp = self.tipo["exp"]
 		self.direcao = 0
 		self.last_melee = 0
 		self.melee_cd = 600 # Cooldown do ataque melee
@@ -314,6 +341,9 @@ class Player(pygame.sprite.Sprite):
 		if colisaop:
 			self.in_mapp = False
 
+	def level_up(self):
+		self.vida += 10
+
 	def update(self):
 		# Roda as funções e da update na posição
 		self.get_keys()
@@ -327,6 +357,9 @@ class Player(pygame.sprite.Sprite):
 		self.colisao_parede('y')
 		self.colisao_monstro('y')
 		self.colisao_trans()
+		if self.exp - 30 >= 0:
+			self.level_up()
+			self.exp = 0
 		if self.rect.right > WIDTH:
 			self.rect.right = WIDTH
 			self.x -= self.vx * self.tela.dt
@@ -340,8 +373,9 @@ class Player(pygame.sprite.Sprite):
 			self.rect.bottom = HEIGHT
 			self.y -= self.vy * self.tela.dt
 		if self.vida <= 0:
+			self.vida = 0
 			self.kill()
-		print(self.x, self.y)
+			self.tela.game.estado = "loss"
 
 
 class Parede(pygame.sprite.Sprite):
@@ -426,7 +460,7 @@ class Melee_acao(pygame.sprite.Sprite):
 		self.pos = vec(pos)
 		self.rect.center = pos
 		self.spawn_time = pygame.time.get_ticks()
-		self.lifetime = 1
+		self.lifetime = 5
 
 	def update(self):
 		self.rect.center = self.pos
@@ -504,6 +538,7 @@ class Ranged(pygame.sprite.Sprite):
 			Dano(self.tela, self.tela.player.x + self.tipo["width"]/2, self.tela.player.y - self.tipo["height"]/2, \
 				str(self.tipo["nome"]))
 			self.tela.player.vida -= self.tipo["dano"]
+			Vida(self.tela, 16, 1, self.tela.player.vida)
 			self.kill()
 
 	def update(self):
@@ -565,9 +600,33 @@ class Exp(pygame.sprite.Sprite):
 		self.x = x
 		self.y = y
 		self.spawn_time = pygame.time.get_ticks()
-		self.lifetime = 500
+		self.lifetime = 800
 
 	def update(self):
 		self.rect.center = (self.x, self.y)
 		if pygame.time.get_ticks() - self.spawn_time > self.lifetime:
 			self.kill()
+
+class Vida(pygame.sprite.Sprite):
+	def __init__(self, tela, x, y, nom):
+		self.groups = tela.all_sprites, tela.visiveis
+		pygame.sprite.Sprite.__init__(self, self.groups)
+		self.tela = tela
+		self.img_dir = path.join(path.dirname(__file__), "sprites\hp")
+		self.image = pygame.transform.scale(pygame.image.load(path.join(self.img_dir,
+											str(nom)+".png")).convert_alpha(),
+											(48,48))
+		self.rect = self.image.get_rect() 
+		self.x = x
+		self.y = y
+		self.rect.x = self.x * TILESIZE
+		self.rect.y = self.y * TILESIZE
+
+class Bau(pygame.sprite.Sprite):
+	def __init__(self, tela, x, y):
+		self.groups = tela.all_sprites, tela.visiveis, tela.baus
+		pygame.sprite.Sprite.__init__(self, self.groups)
+		self.tela = tela
+		self.rect = self.image.get_rect() 
+		self.x = x
+		self.y = y

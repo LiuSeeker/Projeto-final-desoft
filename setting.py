@@ -71,10 +71,10 @@ mapas = {"casa.txt":
 # Tipo
 jogador = {
 		"nome": "player",
-		"vel": 300,
+		"vel": 100,
 		"width": 25,
 		"height": TILESIZE,
-		"vida": 100,
+		"vida": 50,
 		"dano": 5,
 		"exp": 0,
 		"ataqueu": "ataqueu.png",
@@ -94,10 +94,11 @@ snake = {
 		"width": 20,
 		"height": 30,
 		"vida": 10,
-		"dano": 5,
+		"dano": 2,
 		"cd": 1400,
 		"ataquedur": 1400,
 		"ataquevel": 50,
+		"exp": 5,
 		"f": "snakef.png", # Imagem frontal
 		"b": "snakeb.png", # Imagem traseira
 		"r": "snaker.png", # Imagem da direita
@@ -117,10 +118,11 @@ ghost = {
 		"width": TILESIZE,
 		"height": TILESIZE,
 		"vida": 20,
-		"dano": 7,
+		"dano": 5,
 		"cd": 1600,
 		"ataquedur": 1600,
 		"ataquevel": 80,
+		"exp": 10,
 		"f": "ghostf.png",
 		"b": "ghostb.png",
 		"r": "ghostr.png",
@@ -144,6 +146,7 @@ bat = {
 		"cd": 1500,
 		"ataquedur": 1200,
 		"ataquevel": 40,
+		"exp": 2,
 		"f": "batf.png",
 		"b": "batb.png",
 		"r": "batr.png",
@@ -156,15 +159,41 @@ bat = {
 		"aheight": 10
 		}
 
+boss = {
+        "nome": "boss",
+  		"vel": 70,
+		"count": 100,
+		"width": 2 * TILESIZE,
+		"height": 3 * TILESIZE,
+		"vida": 75,
+		"dano": 10,
+		"cd": 1000,
+		"exp": 20,
+		"ataquedur": 3000,
+		"ataquevel": 100,
+		"f": "bossr.png",
+		"b": "bossl.png",
+		"r": "bossr.png",
+		"l": "bossl.png",
+		"au": "bata.png",
+		"ad": "bata.png",
+		"al": "bata.png",
+		"ar": "bata.png",
+		"awidth": 10,
+		"aheight": 10
+		}
+
 dano = {
 		"player": str(jogador["dano"]) + ".png",
 		"snake": "2.png",
-		"ghost": "4.png",
-		"bat": "1.png"
+		"ghost": "5.png",
+		"bat": "1.png",
+		"boss": "10.png"
 		}
 
 exp = {
 		"snake": "5.png",
 		"ghost": "10.png",
-		"bat": "2.png"
+		"bat": "2.png",
+		"boss": "20.png"
 }
