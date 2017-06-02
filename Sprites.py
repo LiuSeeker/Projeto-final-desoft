@@ -203,6 +203,7 @@ class Monstro(pygame.sprite.Sprite):
 		else:
 			self.ataque()
 		if self.vida <= 0:
+			self.vida = 0
 			self.kill()
 			Exp(self.tela, self.tela.player.x + jogador["width"]/2, self.tela.player.y - jogador["height"]/2, self.tipo["nome"])
 			self.tela.player.exp += self.tipo["exp"]
