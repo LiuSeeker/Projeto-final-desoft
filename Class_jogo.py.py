@@ -188,5 +188,9 @@ class Game:
             
 # Roda o jogo
 game = Game()
+pygame.mixer.init()
+musica_dir = path.join(path.dirname(__file__), "Trilha_sonora")
+pygame.mixer.music.load(path.join(musica_dir,"Musica_epica.ogg"))
+pygame.mixer.music.play(loops=-1)
 while True:
     game.run()
