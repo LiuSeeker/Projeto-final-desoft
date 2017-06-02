@@ -36,7 +36,7 @@ class Tela:
 		self.LB = []
 		self.LZ = []
 		self.LO = []
-		self.LU = []
+		self.LH = []
 
 		# Cria os obajetos a partirwwwwdddd do .txt
 		for row, tiles in enumerate(self.map.data): # "row" retorna a posição na lista, "tiles" retorna a string
@@ -59,9 +59,9 @@ class Tela:
 				elif tile == "O":
 					self.LO.append(col)
 					self.LO.append(row)
-				elif tile == "U":
-					self.LU.append(col)
-					self.LU.append(row)
+				elif tile == "H":
+					self.LH.append(col)
+					self.LH.append(row)
 
 				if tile == "1":
 					Parede(self, col, row)
@@ -85,11 +85,11 @@ class Tela:
 		for i in range(int(len(self.LB)/2)):
 			self.LB[i] = Monstro(self, self.LB[i*2], self.LB[i*2+1], bat)
 		for i in range(int(len(self.LZ)/2)):
-			self.LZ[i] = Boss(self, self.LZ[i*2], self.LZ[i*2+1], boss)
+			self.LZ[i] = Monstro(self, self.LZ[i*2], self.LZ[i*2+1], boss)
 		for i in range(int(len(self.LO)/2)):
 			self.LO[i] = Monstro_seguidor(self, self.LO[i*2], self.LO[i*2+1], bat)
-		for i in range(int(len(self.LU)/2)):
-			self.LU[i] = Monstro_seguidor(self, self.LU[i*2], self.LU[i*2+1], ghost)	
+		for i in range(int(len(self.LH)/2)):
+			self.LH[i] = Monstro_seguidor(self, self.LH[i*2], self.LH[i*2+1], ghost)	
 
 		self.player = Player(self, self.game.px, self.game.py, jogador)
 		self.hp = Vida(self, 18, 1, "hp")

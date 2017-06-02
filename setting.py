@@ -74,7 +74,7 @@ jogador = {
 		"vel": 100,
 		"width": 25,
 		"height": TILESIZE,
-		"vida": 50,
+		"vida": 75,
 		"dano": 5,
 		"exp": 0,
 		"ataqueu": "ataqueu.png",

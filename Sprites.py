@@ -119,6 +119,7 @@ class Monstro(pygame.sprite.Sprite):
 					self.x = colisao[0].rect.right
 				self.vx = 0
 				self.rect.x = self.x
+				return True
 			if dir == 'y':
 				if self.vy > 0:
 					self.y = colisao[0].rect.top - self.rect.height
@@ -126,6 +127,7 @@ class Monstro(pygame.sprite.Sprite):
 					self.y = colisao[0].rect.bottom 
 				self.vy = 0
 				self.rect.y = self.y
+				return True
 
 	def colisao_monstro(self, dir):
 		# Função para colisão entre o Monstro e outros Monstros
@@ -172,13 +174,15 @@ class Monstro(pygame.sprite.Sprite):
 
 	def ataque_boss2(self):
 		#Ataque acontece se o monstro colidir com o jogador
-		if self.colide_com_playery or self.colide_com_playerx:
+		if self.colisao_player('y') or self.colisao_player('x'):
 			now = pygame.time.get_ticks()
 			if now - self.last_melee > self.melee_cd:
 				self.last_melee = now
 				Dano(self.tela, self.tela.player.x + self.tipo["width"]/2, self.tela.player.y - self.tipo["height"]/2, \
 				str(self.tipo["nome"]))
-				self.tela.player.vida -= self.tipo["dano"] - 5
+				self.tela.player.vida -= self.tipo["dano"] 
+				if self.tela.player.vida < 0:
+					self.tela.player.vida = 0
 				Vida(self.tela, 16, 1, self.tela.player.vida)
 
 	def update(self):
@@ -543,6 +547,8 @@ class Ranged(pygame.sprite.Sprite):
 			Dano(self.tela, self.tela.player.x + self.tipo["width"]/2, self.tela.player.y - self.tipo["height"]/2, \
 				str(self.tipo["nome"]))
 			self.tela.player.vida -= self.tipo["dano"]
+			if self.tela.player.vida < 0:
+				self.tela.player.vida = 0
 			Vida(self.tela, 16, 1, self.tela.player.vida)
 			self.kill()
 
