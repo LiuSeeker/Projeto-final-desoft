@@ -6,7 +6,6 @@ from setting import *
 from Sprites import *
 from Mapa import *
 from Monstro_seguidor import *
-from Boss import *
 
 class Tela:
 	def __init__(self, game, mapa):
@@ -38,8 +37,6 @@ class Tela:
 		self.LZ = []
 		self.LO = []
 		self.LU = []
-
-
 
 		# Cria os obajetos a partirwwwwdddd do .txt
 		for row, tiles in enumerate(self.map.data): # "row" retorna a posição na lista, "tiles" retorna a string
@@ -92,9 +89,7 @@ class Tela:
 		for i in range(int(len(self.LO)/2)):
 			self.LO[i] = Monstro_seguidor(self, self.LO[i*2], self.LO[i*2+1], bat)
 		for i in range(int(len(self.LU)/2)):
-			self.LU[i] = Monstro_seguidor(self, self.LU[i*2], self.LU[i*2+1], ghost)
-
-		
+			self.LU[i] = Monstro_seguidor(self, self.LU[i*2], self.LU[i*2+1], ghost)	
 
 		self.player = Player(self, self.game.px, self.game.py, jogador)
 		self.hp = Vida(self, 18, 1, "hp")
@@ -117,6 +112,7 @@ class Game:
 		self.mapa = mapas[self.txt] # Puxa o dicionário do mapa escolhido
 		self.px = 17 # Posição x do player
 		self.py = 15 # Posição y do player
+		self.vidap = 0
 
 	def intro(self):
 		self.menu = pygame.image.load("maps\\intro\\" + "GAMEINTRO.png")
@@ -197,6 +193,7 @@ class Game:
 			self.mapa = mapas[self.txt]
 			self.px = 1
 			self.py = self.tela.player.y / TILESIZE
+			self.vidap = self.tela.player.vida
 			self.tela = Tela(self, self.txt)
 		if self.tela.player.in_mapl == False:
 			# Transição para tela da esquerda
@@ -204,6 +201,7 @@ class Game:
 			self.mapa = mapas[self.txt]
 			self.px = 33
 			self.py = self.tela.player.y / TILESIZE
+			self.vidap = self.tela.player.vida
 			self.tela = Tela(self, self.txt)
 		if self.tela.player.in_mapu == False:
 			# Transição para tela de cima
@@ -211,6 +209,7 @@ class Game:
 			self.mapa = mapas[self.txt]
 			self.px = self.tela.player.x / TILESIZE
 			self.py = 19
+			self.vidap = self.tela.player.vida
 			self.tela = Tela(self, self.txt)
 		if self.tela.player.in_mapd == False:
 			# Transição para tela de baixo
@@ -218,6 +217,7 @@ class Game:
 			self.mapa = mapas[self.txt]
 			self.px = self.tela.player.x / TILESIZE
 			self.py = 1
+			self.vidap = self.tela.player.vida
 			self.tela = Tela(self, self.txt)
 		if self.tela.player.in_mapp == False:
 			# Transição para porta
@@ -225,6 +225,7 @@ class Game:
 			self.mapa = mapas[self.txt]
 			self.px = self.mapa["x"]
 			self.py = self.mapa["y"]
+			self.vidap = self.tela.player.vida
 			self.tela = Tela(self, self.txt)
 			
 # Roda o jogo

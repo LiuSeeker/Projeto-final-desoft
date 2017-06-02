@@ -225,7 +225,11 @@ class Player(pygame.sprite.Sprite):
 		self.rect.center = (x,y)
 		self.x = x * TILESIZE # Define a posição x
 		self.y = y * TILESIZE # Define a posição y
-		self.vida = self.tipo["vida"]
+		if self.tela.game.vidap == 0:
+			self.vida = self.tipo["vida"]
+			print("fail")
+		else:
+			self.vida = self.tela.game.vidap
 		self.exp = self.tipo["exp"]
 		self.direcao = 0
 		self.last_melee = 0
