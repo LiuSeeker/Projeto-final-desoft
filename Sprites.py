@@ -211,6 +211,8 @@ class Monstro(pygame.sprite.Sprite):
 			self.kill()
 			Exp(self.tela, self.tela.player.x + jogador["width"]/2, self.tela.player.y - jogador["height"]/2, self.tipo["nome"])
 			self.tela.player.exp += self.tipo["exp"]
+			if self.tipo == boss:
+				self.tela.game.estado = "win"
 	
 
 class Player(pygame.sprite.Sprite):
