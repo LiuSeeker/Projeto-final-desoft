@@ -6,7 +6,9 @@ A biblioteca externa principal utilizada é o `PyGame`
 # Desenvolvedores
 
 Vitor Liu
+
 Guilherme Aliperti
+
 Bruno
 
 # Deadlines
